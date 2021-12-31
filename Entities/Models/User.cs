@@ -1,0 +1,18 @@
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace MSQBot_API.Entities.Models
+{
+    [Table("users")]
+    public class User
+    {
+        [Key]
+        [Column("id_user")]
+        public long UserId { get; set; }
+
+        [Column("name_user")]
+        public string Name { get; set; }
+
+        public ICollection<Rate> rates { get; set; }
+    }
+}

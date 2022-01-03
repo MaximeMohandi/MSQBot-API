@@ -3,7 +3,7 @@
     public class ActivityDto
     {
         public DateTime Date { get; set; }
-        public String Title { get; set; }
-        public String Desc { get; set; }
+        public string Title { get; set; } = string.Empty;
+        public string Desc { get; set; } = string.Empty;
     }
 }

@@ -11,17 +11,17 @@ namespace MSQBot_API.Entities.Models
         public int MovieId { get; set; }
 
         [Column("name_movie")]
-        public string? Name { get; set; }
+        public string Title { get; set; } = string.Empty;
 
         [Column("movie_poster")]
-        public string? Poster { get; set; }
+        public string Poster { get; set; } = string.Empty;
 
         [Column("date_added_movie")]
-        public DateTime Added { get; set; }
+        public DateTime AddedDate { get; set; }
 
         [Column("seen_date_movie")]
-        public DateTime? Seen { get; set; }
+        public DateTime? SeenDate { get; set; }
 
-        public ICollection<Rate>? Rates { get; set; }
+        public List<Rate>? Rates { get; set; }
     }
 }

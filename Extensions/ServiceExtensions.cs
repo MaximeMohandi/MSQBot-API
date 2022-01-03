@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MSQBot_API.Interfaces;
-using MSQBot_API.Repository;
 using MSQBot_API.Services.ImageScrapper;
+using MSQBot_API.Services.MovieServices;
 
 namespace MSQBot_API.Extensions
 {
@@ -51,9 +51,9 @@ namespace MSQBot_API.Extensions
         /// Configure a repository wrapper
         /// </summary>
         /// <param name="services"></param>
-        public static void ConfigureRepositoryWrapper(this IServiceCollection services)
+        public static void ConfigureBusinessServices(this IServiceCollection services)
         {
-            services.AddScoped<IRepositoryWrapper, RepositoryWrapper>();
+            services.AddScoped<MovieServices, MovieServices>();
             services.AddScoped<IImageScrapperService, GoogleImageScrapperServices>();
         }
     }

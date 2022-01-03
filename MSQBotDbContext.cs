@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MSQBot_API.Entities.Models;
 
-namespace MSQBot_API.Repository
+namespace MSQBot_API
 {
     public class MSQBotDbContext : DbContext
     {
@@ -9,14 +9,15 @@ namespace MSQBot_API.Repository
         {
         }
 
-        public DbSet<Movie> movies { get; set; }
-        public DbSet<User> users { get; set; }
-        public DbSet<Rate> rates { get; set; }
+        public DbSet<Movie> Movies { get; set; }
+        public DbSet<User> Users { get; set; }
+        public DbSet<Rate> Rates { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Rate>()
-                .HasKey(r => new { r.MovieId, r.UserId });
+            modelBuilder.Entity<Rate>().HasKey(r => new { r.MovieId, r.UserId });
+
+            base.OnModelCreating(modelBuilder);
         }
     }
 }

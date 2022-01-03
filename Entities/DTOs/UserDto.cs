@@ -5,11 +5,11 @@
         /// <summary>
         /// User id
         /// </summary>
-        public long _id { get; set; }
+        public long UserId { get; set; }
 
         /// <summary>
         /// User Name
         /// </summary>
-        public string Name { get; set; }
+        public string Name { get; set; } = string.Empty;
     }
 }

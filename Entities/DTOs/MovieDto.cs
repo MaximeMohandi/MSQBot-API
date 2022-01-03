@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace MSQBot_API.Entities.DTOs
+﻿namespace MSQBot_API.Entities.DTOs
 {
     /// <summary>
     /// Front representation of a movie
@@ -8,20 +6,23 @@ namespace MSQBot_API.Entities.DTOs
     public class MovieDto
     {
         /// <summary>
-        /// id movie in database
+        /// Movie unique id
         /// </summary>
-        public int _id { get; set; }
+        public int MovieId { get; set; }
 
         /// <summary>
         /// movie title
         /// </summary>
-        [Required(ErrorMessage = "Name is required")]
-        public string Title { get; set; }
+        public string Title { get; set; } = string.Empty;
+
+        /// <summary>
+        /// Movie poster
+        /// </summary>
+        public string Poster { get; set; } = string.Empty;
 
         /// <summary>
         /// The date when the movie has been added
         /// </summary>
-        [Required(ErrorMessage = "Added date is required")]
         public DateTime AddedDate { get; set; }
 
         /// <summary>
@@ -30,23 +31,37 @@ namespace MSQBot_API.Entities.DTOs
         public DateTime? SeenDate { get; set; }
 
         /// <summary>
+        /// All rates given to the movie
+        /// </summary>
+        public List<RateDto>? Rates { get; set; }
+
+        /// <summary>
         /// Average rate of the movie
         /// </summary>
-        public decimal? AvgRate { get; set; }
+        public decimal? AvgRate
+        {
+            get => IsRatesExist() ? Math.Round(Rates.Average(r => r.Rate).Value, 2) : default(decimal?);
+        }
 
         /// <summary>
         /// Best Rate given to the movie
         /// </summary>
-        public decimal? TopRate { get; set; }
+        public decimal? MaxRate
+        {
+            get => IsRatesExist() ? Rates.Max(r => r.Rate) : default(decimal?);
+        }
 
         /// <summary>
         /// Worst rate given to the movie
         /// </summary>
-        public decimal? BottomRate { get; set; }
+        public decimal? MinRate
+        {
+            get => IsRatesExist() ? Rates.Min(r => r.Rate) : default(decimal?);
+        }
 
-        /// <summary>
-        /// Movie poster
-        /// </summary>
-        public string? Poster { get; set; }
+        private bool IsRatesExist()
+        {
+            return Rates is not null && Rates.Count > 0;
+        }
     }
 }

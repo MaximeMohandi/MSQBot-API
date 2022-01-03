@@ -9,3 +9,5 @@
  configurer automapper
 
  configure create database if not exist
+
+ ajouter les erreur dans les services

@@ -10,16 +10,14 @@ namespace MSQBot_API.Controllers
     public class MovieController : ControllerBase
     {
         private readonly ILogger _logger;
-        private readonly IRepositoryWrapper _databaseRepoWrapper;
         private readonly IImageScrapperService _imageScrapper;
         private readonly MovieServices _movieServices;
 
-        public MovieController(ILogger<MovieController> logger, IRepositoryWrapper databaseRepository, IImageScrapperService imageScrapper)
+        public MovieController(ILogger<MovieController> logger, MovieServices movieServices, IImageScrapperService imageScrapper)
         {
             _logger = logger;
-            _databaseRepoWrapper = databaseRepository;
             _imageScrapper = imageScrapper;
-            _movieServices = new MovieServices(_databaseRepoWrapper, imageScrapper);
+            _movieServices = movieServices;
         }
 
         #region Getter
@@ -29,7 +27,11 @@ namespace MSQBot_API.Controllers
         {
             try
             {
-                return Ok(_movieServices.GetMoviesData());
+                var movies = _movieServices.GetMovies();
+
+                if (movies is null || movies.Count == 0) return NotFound();
+
+                return Ok(movies);
             }
             catch (Exception ex)
             {
@@ -38,12 +40,16 @@ namespace MSQBot_API.Controllers
             }
         }
 
-        [HttpGet("{id:int}", Name = "MovieById")]
-        public IActionResult GetMovie(int id)
+        [HttpGet("{id:int}", Name = "getMovie")]
+        public IActionResult Get(int id)
         {
             try
             {
-                return Ok(_movieServices.GetMovieDetails(id));
+                var movie = _movieServices.GetMovie(id);
+
+                if (movie is null) return NotFound();
+
+                return Ok(movie);
             }
             catch (Exception ex)
             {
@@ -63,7 +69,7 @@ namespace MSQBot_API.Controllers
         #region Post
 
         [HttpPost("movie")]
-        public IActionResult AddMovie([FromBody] MovieInsertDto movie)
+        public IActionResult AddMovie([FromBody] MovieCreationDto movie)
         {
             try
             {
@@ -76,7 +82,9 @@ namespace MSQBot_API.Controllers
                 {
                     return BadRequest("Movie model is invalid");
                 }
+
                 _movieServices.AddMovie(movie);
+
                 return StatusCode(201, "movie added");
             }
             catch (Exception ex)
@@ -88,8 +96,6 @@ namespace MSQBot_API.Controllers
 
         #endregion Post
 
-
-
         #region Put
 
         [HttpPut("movies/poster")]
@@ -98,7 +104,8 @@ namespace MSQBot_API.Controllers
             try
             {
                 _movieServices.UpdateAllMoviePoster();
-                return NoContent();
+
+                return StatusCode(201, "posters added");
             }
             catch (Exception ex)
             {

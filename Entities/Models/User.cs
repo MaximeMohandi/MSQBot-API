@@ -13,6 +13,6 @@ namespace MSQBot_API.Entities.Models
         [Column("name_user")]
         public string Name { get; set; }
 
-        public ICollection<Rate> rates { get; set; }
+        public List<Rate> rates { get; set; }
     }
 }

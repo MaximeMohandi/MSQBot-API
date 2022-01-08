@@ -10,7 +10,7 @@ namespace MSQBot_API.Entities.DTOs
         /// <summary>
         /// movie title
         /// </summary>
-        [Required(ErrorMessage = "Name is required")]
+        [Required(ErrorMessage = "Title is required")]
         [MaxLength(50, ErrorMessage = "Max length is 50")]
         public string Title { get; set; } = string.Empty;
 

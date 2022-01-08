@@ -1,5 +1,8 @@
 ﻿namespace MSQBot_API.Entities.DTOs
 {
+    /// <summary>
+    /// Base movie datas
+    /// </summary>
     public class MovieDto
     {
         /// <summary>

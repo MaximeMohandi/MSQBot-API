@@ -5,6 +5,9 @@ using MSQBot_API.Helpers;
 
 namespace MSQBot_API.Services
 {
+    /// <summary>
+    /// Service to manage rates datas
+    /// </summary>
     public class RateServices
     {
         private readonly MSQBotDbContext _dbContext;

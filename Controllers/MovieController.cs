@@ -9,9 +9,17 @@ namespace MSQBot_API.Controllers
     [ApiController]
     public class MovieController : ControllerBase
     {
+        /*Dependencies*/
         private readonly ILogger _logger;
         private readonly IImageScrapperService _imageScrapper;
         private readonly MovieServices _movieServices;
+
+        /*Movies message codes*/
+        private const string ERR_MOVIE_INTERNAL_SERVER = "ERR_MOVIE_INTERNAL_SERVER";
+        private const string ERR_MOVIE_ARGS_NULL = "ERR_MOVIE_ARGS_NULL";
+        private const string ERR_MOVIE_INVALID_BODY = "ERR_MOVIE_INVALID_BODY";
+        private const string SUCCESS_MOVIE_ADDED = "SUCCESS_MOVIE_ADDED";
+        private const string SUCCESS_MOVIE_UPDATED = "SUCCESS_MOVIE_UPDATED";
 
         public MovieController(ILogger<MovieController> logger, MovieServices movieServices, IImageScrapperService imageScrapper)
         {
@@ -36,7 +44,7 @@ namespace MSQBot_API.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex.Message);
-                return StatusCode(500, "Internal Server error : " + ex.Message);
+                return StatusCode(500, ERR_MOVIE_INTERNAL_SERVER);
             }
         }
 
@@ -54,13 +62,14 @@ namespace MSQBot_API.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex.Message);
-                return StatusCode(500, "Internal Server error : " + ex.Message);
+                return StatusCode(500, ERR_MOVIE_INTERNAL_SERVER);
             }
         }
 
         [HttpGet("movie/poster/{poster}")]
         public IActionResult GetMoviePoster(string poster)
         {
+            if (poster is null || poster == string.Empty) return BadRequest(ERR_MOVIE_ARGS_NULL);
             return Ok(_imageScrapper.FindImage(poster));
         }
 
@@ -73,33 +82,28 @@ namespace MSQBot_API.Controllers
         {
             try
             {
-                if (movie is null)
-                {
-                    return BadRequest("Movie is null");
-                }
+                if (movie is null) return BadRequest(ERR_MOVIE_ARGS_NULL);
 
-                if (!ModelState.IsValid)
-                {
-                    return BadRequest("Movie model is invalid");
-                }
+                if (!ModelState.IsValid) return BadRequest(ERR_MOVIE_INVALID_BODY);
 
                 _movieServices.AddMovie(movie);
 
-                return StatusCode(201, "movie added");
+                return StatusCode(201, SUCCESS_MOVIE_ADDED);
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex.Message);
-                return StatusCode(500, "Internal server error");
+                return StatusCode(500, ERR_MOVIE_INTERNAL_SERVER);
             }
         }
 
         [HttpPost("rate")]
-        public IActionResult RateMovie(MovieRateCreationDto movieRated)
+        public IActionResult RateMovie([FromBody] MovieRateCreationDto movieRated)
         {
             try
             {
-                if (movieRated == null) return BadRequest();
+                if (movieRated == null) return BadRequest(ERR_MOVIE_ARGS_NULL);
+                if (!ModelState.IsValid) return BadRequest(ERR_MOVIE_INVALID_BODY);
 
                 _movieServices.RateMovie(movieRated);
 
@@ -108,7 +112,7 @@ namespace MSQBot_API.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex.Message);
-                return StatusCode(500, "Internal server error : Something went wrong when rating a movie");
+                return StatusCode(500, ERR_MOVIE_INTERNAL_SERVER);
             }
         }
 
@@ -123,12 +127,12 @@ namespace MSQBot_API.Controllers
             {
                 _movieServices.UpdateAllMoviePoster();
 
-                return StatusCode(201, "posters added");
+                return StatusCode(202, SUCCESS_MOVIE_UPDATED);
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex.Message);
-                return StatusCode(500, "Internal server error");
+                return StatusCode(500, ERR_MOVIE_INTERNAL_SERVER);
             }
         }
 
@@ -137,14 +141,17 @@ namespace MSQBot_API.Controllers
         {
             try
             {
+                if (newNameMovie == null) return BadRequest(ERR_MOVIE_ARGS_NULL);
+                if (!ModelState.IsValid) return BadRequest(ERR_MOVIE_INVALID_BODY);
+
                 _movieServices.UpdateMovieName(newNameMovie);
 
-                return StatusCode(202, "Movie name changed to " + newNameMovie.NewTitle);
+                return StatusCode(202, SUCCESS_MOVIE_UPDATED);
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex.Message);
-                return StatusCode(500, "Internal server error");
+                return StatusCode(500, ERR_MOVIE_INTERNAL_SERVER);
             }
         }
 

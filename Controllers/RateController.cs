@@ -8,6 +8,7 @@ namespace MSQBot_API.Controllers
     [ApiController]
     public class RateController : ControllerBase
     {
+        /*Dependencies*/
         private readonly ILogger _logger;
         private readonly RateServices _rateServices;
 

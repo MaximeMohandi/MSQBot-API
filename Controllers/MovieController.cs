@@ -94,11 +94,29 @@ namespace MSQBot_API.Controllers
             }
         }
 
+        [HttpPost("rate")]
+        public IActionResult RateMovie(MovieRateCreationDto movieRated)
+        {
+            try
+            {
+                if (movieRated == null) return BadRequest();
+
+                _movieServices.RateMovie(movieRated);
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                return StatusCode(500, "Internal server error : Something went wrong when rating a movie");
+            }
+        }
+
         #endregion Post
 
         #region Put
 
-        [HttpPut("movies/poster")]
+        [HttpPut("poster")]
         public IActionResult SetMoviesPoster()
         {
             try
@@ -106,6 +124,22 @@ namespace MSQBot_API.Controllers
                 _movieServices.UpdateAllMoviePoster();
 
                 return StatusCode(201, "posters added");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                return StatusCode(500, "Internal server error");
+            }
+        }
+
+        [HttpPut("movie/name")]
+        public IActionResult UpdateMovieName([FromBody] MovieTitleUpdateDto newNameMovie)
+        {
+            try
+            {
+                _movieServices.UpdateMovieName(newNameMovie);
+
+                return StatusCode(202, "Movie name changed to " + newNameMovie.NewTitle);
             }
             catch (Exception ex)
             {

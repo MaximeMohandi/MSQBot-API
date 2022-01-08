@@ -15,7 +15,7 @@ namespace MSQBot_API.Services.MovieServices
         private readonly IImageScrapperService _imageScrapper;
 
         private readonly string POSTER_SEARCH = " movie poster";
-        private readonly string NO_MOVIE_ERR = "No movie found";
+        private readonly string MOVIE_EXIST_ERR = "The Movie you try to add already exist";
 
         public MovieServices(MSQBotDbContext dbContext, IImageScrapperService imageScrapper)
         {
@@ -61,6 +61,8 @@ namespace MSQBot_API.Services.MovieServices
         /// <param name="movie">the new movie to insert</param>
         public void AddMovie(MovieCreationDto movie)
         {
+            if (_dbContext.Movies.Any(m => m.Title == movie.Title)) throw new ArgumentException(MOVIE_EXIST_ERR);
+
             _dbContext.Movies.Add(new Movie
             {
                 Title = movie.Title,
@@ -82,6 +84,53 @@ namespace MSQBot_API.Services.MovieServices
                     _dbContext.Movies.Update(movie);
                 }
             }
+            _dbContext.SaveChanges();
+        }
+
+        /// <summary>
+        /// Add a new rate to a movie in database
+        /// </summary>
+        /// <param name="movieRated">data used to rate a movie</param>
+        public void RateMovie(MovieRateCreationDto movieRated)
+        {
+            _dbContext.Rates.Add(new Rate
+            {
+                MovieId = movieRated.MoviId,
+                UserId = movieRated.UserId,
+                Note = movieRated.Rate
+            });
+            UpdateMovieSeenDate(_dbContext.Movies.FirstOrDefault(m => m.MovieId == movieRated.MoviId));
+            _dbContext.SaveChanges();
+        }
+
+        /// <summary>
+        /// Update seen date of movie if it's not already set.
+        /// </summary>
+        /// <param name="movie">movie to update</param>
+        public void UpdateMovieSeenDate(Movie movie)
+        {
+            if (movie.SeenDate is null)
+            {
+                movie.SeenDate = DateTime.Now;
+                _dbContext.Movies.Update(movie);
+                _dbContext.SaveChanges();
+            }
+        }
+
+        /// <summary>
+        /// Replace the title of a movie.
+        /// </summary>
+        /// <param name="newMovieTitle">DTO representing the change</param>
+        public void UpdateMovieName(MovieTitleUpdateDto newMovieTitle)
+        {
+            if (newMovieTitle.NewTitle is null)
+                throw new ArgumentException("New Title can't be null");
+
+            _dbContext.Movies.Update(new Movie
+            {
+                MovieId = newMovieTitle.MovieId,
+                Title = newMovieTitle.NewTitle
+            });
             _dbContext.SaveChanges();
         }
     }

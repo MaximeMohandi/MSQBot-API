@@ -5,6 +5,13 @@
     /// </summary>
     public class MovieDatasDto
     {
+        private List<MovieDetailsDto> _movies;
+
+        public MovieDatasDto(List<MovieDetailsDto> movies)
+        {
+            _movies = movies;
+        }
+
         /// <summary>
         /// Number of movie seen
         /// </summary>
@@ -18,12 +25,12 @@
         /// <summary>
         /// Movie with the best average rate
         /// </summary>
-        public MovieDto BestMovie { get => Movies.OrderByDescending(m => m.AvgRate).First(); }
+        public MovieDetailsDto BestMovie { get => Movies.OrderByDescending(m => m.AvgRate).First(); }
 
         /// <summary>
         /// Movie with worst average rate
         /// </summary>
-        public MovieDto WorstMovie { get => Movies.Where(m => m.AvgRate.HasValue).Last(); }
+        public MovieDetailsDto WorstMovie { get => Movies.Where(m => m.AvgRate.HasValue).Last(); }
 
         /// <summary>
         /// Average rate given to movies
@@ -33,7 +40,7 @@
         /// <summary>
         /// All the movies
         /// </summary>
-        public List<MovieDto> Movies { get; set; }
+        public List<MovieDetailsDto> Movies { get => _movies; set => _movies = value; }
 
         /// <summary>
         /// Last activities on the movies data

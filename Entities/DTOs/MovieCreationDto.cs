@@ -13,5 +13,11 @@ namespace MSQBot_API.Entities.DTOs
         [Required(ErrorMessage = "Name is required")]
         [MaxLength(50, ErrorMessage = "Max length is 50")]
         public string Title { get; set; } = string.Empty;
+
+        /// <summary>
+        /// The date when the movie has been added
+        /// </summary>
+        [Required(ErrorMessage = "Added date is required")]
+        public DateTime AddedDate { get; set; }
     }
 }

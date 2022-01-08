@@ -27,12 +27,9 @@ namespace MSQBot_API.Services.MovieServices
         /// Get all movies with the data attached
         /// </summary>
         /// <returns></returns>
-        public async Task<MovieDatasDto> GetMoviesData()
+        public MovieDatasDto GetMoviesData()
         {
-            return new MovieDatasDto
-            {
-                Movies = GetMovies()
-            };
+            return new MovieDatasDto(GetMovies());
         }
 
         /// <summary>
@@ -40,7 +37,7 @@ namespace MSQBot_API.Services.MovieServices
         /// </summary>
         /// <param name="movieId">id movie to fetch</param>
         /// <returns>A movie with all it's rates</returns>
-        public MovieDto GetMovie(int movieId)
+        public MovieDetailsDto GetMovie(int movieId)
         {
             return GetMovies().FirstOrDefault(m => m.MovieId == movieId);
         }
@@ -49,13 +46,13 @@ namespace MSQBot_API.Services.MovieServices
         /// Fetch all movies
         /// </summary>
         /// <returns></returns>
-        public List<MovieDto> GetMovies()
+        public List<MovieDetailsDto> GetMovies()
         {
             return _dbContext.Movies
                 .Include(r => r.Rates)
                 .ThenInclude(r => r.User)
                 .ToList()
-                .MapMoviesToDTOs();
+                .MapToMovieDetailsDTOs();
         }
 
         /// <summary>

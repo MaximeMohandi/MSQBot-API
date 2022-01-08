@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MSQBot_API.Interfaces;
+using MSQBot_API.Services;
 using MSQBot_API.Services.ImageScrapper;
 using MSQBot_API.Services.MovieServices;
 
@@ -54,6 +55,7 @@ namespace MSQBot_API.Extensions
         public static void ConfigureBusinessServices(this IServiceCollection services)
         {
             services.AddScoped<MovieServices, MovieServices>();
+            services.AddScoped<RateServices, RateServices>();
             services.AddScoped<IImageScrapperService, GoogleImageScrapperServices>();
         }
     }

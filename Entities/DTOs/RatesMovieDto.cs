@@ -1,16 +1,24 @@
 ﻿namespace MSQBot_API.Entities.DTOs
 {
-    public class RateDto
+    /// <summary>
+    /// All the movie rates
+    /// </summary>
+    public class RatesMovieDto
     {
         private decimal? _rate;
 
         /// <summary>
-        /// User that gave the rate
+        /// Movie Rated
         /// </summary>
-        public UserDto User { get; init; } = default!;
+        public MovieDto MovieRated { get; set; }
 
         /// <summary>
-        /// rate given by user
+        /// User that gave the rate
+        /// </summary>
+        public UserDto User { get; set; }
+
+        /// <summary>
+        /// rate given by user rouded to 2 decimal
         /// </summary>
         public decimal? Rate
         {

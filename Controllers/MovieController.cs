@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using MSQBot_API.Entities.DTOs;
 using MSQBot_API.Interfaces;
 using MSQBot_API.Services.MovieServices;
@@ -30,14 +32,19 @@ namespace MSQBot_API.Controllers
 
         #region Getter
 
+        /// <summary>
+        /// Get All the movies
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public IActionResult Get()
         {
             try
             {
-                var movies = _movieServices.GetMovies();
+                var movies = _movieServices.GetMoviesData();
 
-                if (movies is null || movies.Count == 0) return NotFound();
+                if (movies is null) return NotFound();
 
                 return Ok(movies);
             }

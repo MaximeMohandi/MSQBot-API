@@ -6,7 +6,7 @@ namespace MSQBot_API.Helpers
     /// <summary>
     /// Map Entities to DTOs
     /// </summary>
-    public static class Mapper
+    public static class EnitityMapper
     {
         #region MovieDTO mapper
 

@@ -1,15 +1,20 @@
-﻿namespace MSQBot_API.Entities.DTOs
+﻿using Microsoft.AspNetCore.Identity;
+using System.ComponentModel.DataAnnotations;
+
+namespace MSQBot_API.Entities.DTOs
 {
     public class UserDto
     {
         /// <summary>
         /// User id
         /// </summary>
+        [Required]
         public long UserId { get; set; }
 
         /// <summary>
         /// User Name
         /// </summary>
-        public string Name { get; set; } = string.Empty;
+        [Required]
+        public string Name { get; set; }
     }
 }

@@ -1,8 +1,14 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using MSQBot_API.Entities.DTOs;
+using MSQBot_API.Entities.Models;
 using MSQBot_API.Interfaces;
 using MSQBot_API.Services;
 using MSQBot_API.Services.ImageScrapper;
 using MSQBot_API.Services.MovieServices;
+using System.Text;
 
 namespace MSQBot_API.Extensions
 {
@@ -56,7 +62,38 @@ namespace MSQBot_API.Extensions
         {
             services.AddScoped<MovieServices, MovieServices>();
             services.AddScoped<RateServices, RateServices>();
+            services.AddScoped<IUserAuthenticationServices, AuthenticationServices>();
             services.AddScoped<IImageScrapperService, GoogleImageScrapperServices>();
+        }
+
+        public static void ConfigureAuthentication(this IServiceCollection services, IConfiguration configuration)
+        {
+            //add jwt settings
+            var bindJwtSettings = new JwtSettings();
+            configuration.Bind("JWT", bindJwtSettings);
+            services.AddSingleton(bindJwtSettings);
+
+            //configure authentication
+            services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(options =>
+            {
+                options.RequireHttpsMetadata = true;
+                options.SaveToken = true;
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    IssuerSigningKey = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(bindJwtSettings.IssuerSigningKey)),
+                    ValidateIssuer = bindJwtSettings.ValidateIssuer,
+                    ValidIssuer = bindJwtSettings.ValidIssuer,
+                    ValidateAudience = bindJwtSettings.ValidateAudience,
+                    ValidAudience = bindJwtSettings.ValidAudience,
+                    RequireExpirationTime = bindJwtSettings.RequireExpirationTime,
+                    ValidateLifetime = bindJwtSettings.RequireExpirationTime,
+                    ClockSkew = TimeSpan.Zero,
+                };
+            });
         }
     }
 }

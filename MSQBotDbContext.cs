@@ -15,9 +15,8 @@ namespace MSQBot_API
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Rate>().HasKey(r => new { r.MovieId, r.UserId });
-
             base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<Rate>().HasKey(r => new { r.MovieId, r.UserId });
         }
     }
 }

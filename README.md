@@ -34,4 +34,9 @@ To setup the api you need to have the following appsetting configuration
 I call the MSQBot universe all the application revolving around my discord bot. 
 
 You can find the other application on my [GitHub](https://github.com/MaximeMohandi) feel free to take a look
- 
+
+
+## ROADMAP
+
+- implement cusom base controller
+- testing 

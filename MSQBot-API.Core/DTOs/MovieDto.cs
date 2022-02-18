@@ -1,4 +1,4 @@
-﻿namespace MSQBot_API.Entities.DTOs
+﻿namespace MSQBot_API.Core.DTOs
 {
     /// <summary>
     /// Base movie datas

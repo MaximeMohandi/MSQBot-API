@@ -1,13 +1,13 @@
-﻿namespace MSQBot_API.Business.DTOs
+﻿namespace MSQBot_API.Core.DTOs
 {
     /// <summary>
     /// Get all movies with key data and last activities
     /// </summary>
-    public class MovieDatasDto
+    public class MoviesViewDto
     {
-        private List<MovieDetailsDto> _movies;
+        private List<MovieRatedDto> _movies;
 
-        public MovieDatasDto(List<MovieDetailsDto> movies)
+        public MoviesViewDto(List<MovieRatedDto> movies)
         {
             _movies = movies;
         }
@@ -25,12 +25,12 @@
         /// <summary>
         /// Movie with the best average rate
         /// </summary>
-        public MovieDetailsDto BestMovie { get => Movies.OrderByDescending(m => m.AvgRate).First(); }
+        public MovieRatedDto BestMovie { get => Movies.OrderByDescending(m => m.AvgRate).First(); }
 
         /// <summary>
         /// Movie with worst average rate
         /// </summary>
-        public MovieDetailsDto WorstMovie { get => Movies.Where(m => m.AvgRate.HasValue).Last(); }
+        public MovieRatedDto WorstMovie { get => Movies.Where(m => m.AvgRate.HasValue).Last(); }
 
         /// <summary>
         /// Average rate given to movies
@@ -40,7 +40,7 @@
         /// <summary>
         /// All the movies
         /// </summary>
-        public List<MovieDetailsDto> Movies { get => _movies; set => _movies = value; }
+        public List<MovieRatedDto> Movies { get => _movies; set => _movies = value; }
 
         /// <summary>
         /// Last activities on the movies data
@@ -62,7 +62,7 @@
                         {
                             Date = m.SeenDate.Value,
                             Title = "A movie has been rated",
-                            Desc = $"The movie \"{m.Title}\" has been given a {m.AvgRate}/10"
+                            Description = $"The movie \"{m.Title}\" has been given a {m.AvgRate}/10"
                         });
                     }
                     else
@@ -71,7 +71,7 @@
                         {
                             Date = m.AddedDate,
                             Title = "A movie has been add",
-                            Desc = $"The movie \"{m.Title}\" is now in the watchlist"
+                            Description = $"The movie \"{m.Title}\" is now in the watchlist"
                         }); ;
                     }
                 });

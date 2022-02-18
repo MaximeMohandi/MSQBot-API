@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace MSQBot_API.Business.DTOs
+namespace MSQBot_API.Core.DTOs
 {
     /// <summary>
     /// Data used to change a movie title

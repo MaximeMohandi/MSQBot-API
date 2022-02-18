@@ -1,7 +1,6 @@
-﻿using Microsoft.AspNetCore.Identity;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
-namespace MSQBot_API.Entities.DTOs
+namespace MSQBot_API.Core.DTOs
 {
     public class UserDto
     {

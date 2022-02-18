@@ -1,4 +1,4 @@
-﻿namespace MSQBot_API.Entities.DTOs
+﻿namespace MSQBot_API.Core.DTOs
 {
     /// <summary>
     /// Represent an user action made on database
@@ -18,6 +18,6 @@
         /// <summary>
         /// The event description
         /// </summary>
-        public string Desc { get; set; } = string.Empty;
+        public string Description { get; set; } = string.Empty;
     }
 }

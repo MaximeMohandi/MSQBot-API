@@ -8,7 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\MSQBot-API.Core\MSQBot-API.Core.csproj" />
+    <ProjectReference Include="..\MSQBot-API.Core\MSQBot-API.Core.csproj" />
     <ProjectReference Include="..\MSQBot-API.Infrastructure\MSQBot-API.Infrastructure.csproj" />
   </ItemGroup>
 

@@ -1,4 +1,4 @@
-﻿namespace MSQBot_API.Entities.Models
+﻿namespace MSQBot_API.Core.Entities
 {
     public class JwtSettings
     {

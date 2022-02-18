@@ -1,9 +1,9 @@
-﻿namespace MSQBot_API.Entities.DTOs
+﻿namespace MSQBot_API.Core.DTOs
 {
     /// <summary>
     /// All the movie rates
     /// </summary>
-    public class RatesMovieDto
+    public class RatesMovieDto : RateDtoBase
     {
         private decimal? _rate;
 
@@ -16,14 +16,5 @@
         /// User that gave the rate
         /// </summary>
         public UserDto User { get; set; }
-
-        /// <summary>
-        /// rate given by user rouded to 2 decimal
-        /// </summary>
-        public decimal? Rate
-        {
-            get => _rate;
-            set => _rate = value.HasValue ? Math.Round((decimal)value, 2) : null;
-        }
     }
 }

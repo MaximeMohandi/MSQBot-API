@@ -1,4 +1,4 @@
-﻿using MSQBot_API.Business.DTOs;
+﻿using MSQBot_API.Core.DTOs;
 using MSQBot_API.Core.Repositories;
 using MSQBot_API.Interfaces;
 using MSQBot_API.Business.Mappers;
@@ -26,7 +26,7 @@ namespace MSQBot_API.Services.MovieServices
         /// Get all movies with the data attached
         /// </summary>
         /// <returns></returns>
-        public MovieDatasDto GetMoviesData()
+        public MoviesViewDto GetMoviesData()
         {
             return new MovieDatasDto(GetMovies());
         }
@@ -36,7 +36,7 @@ namespace MSQBot_API.Services.MovieServices
         /// </summary>
         /// <param name="movieId">id movie to fetch</param>
         /// <returns>A movie with all it's rates</returns>
-        public MovieDetailsDto GetMovie(int movieId)
+        public MovieRatedDto GetMovie(int movieId)
         {
             return GetMovies().FirstOrDefault(m => m.MovieId == movieId);
         }

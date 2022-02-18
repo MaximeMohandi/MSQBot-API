@@ -1,11 +1,11 @@
 ﻿using Microsoft.IdentityModel.Tokens;
+using MSQBot_API.Core.Entities;
 using MSQBot_API.Entities.DTOs;
-using MSQBot_API.Entities.Models;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 
-namespace MSQBot_API.Helpers
+namespace MSQBot_API.Core.Helpers
 {
     /// <summary>
     /// Methods used to manage JWT tokens

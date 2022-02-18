@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MSQBot_API.Test.Services
+namespace MSQBot_API.Core.Interfaces
 {
-    internal class MovieServicesTest
+    public interface IRate
     {
+        public decimal? Rate { get; set; }
     }
 }

@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace MSQBot_API.Entities.DTOs
+namespace MSQBot_API.Core.DTOs
 {
     /// <summary>
     /// Data used to rate a movie

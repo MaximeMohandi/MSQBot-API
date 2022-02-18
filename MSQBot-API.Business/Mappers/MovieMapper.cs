@@ -1,4 +1,4 @@
-﻿using MSQBot_API.Business.DTOs;
+﻿using MSQBot_API.Core.DTOs;
 using MSQBot_API.Core.Entities;
 
 namespace MSQBot_API.Business.Mappers
@@ -41,9 +41,9 @@ namespace MSQBot_API.Business.Mappers
         /// </summary>
         /// <param name="movie">Movie entitie to map</param>
         /// <returns>mapped movie detailled DTO</returns>
-        public static MovieDetailsDto MapToMovieDetailsDTO(this Movie movie)
+        public static MovieRatedDto MapToMovieDetailsDTO(this Movie movie)
         {
-            return new MovieDetailsDto
+            return new MovieRatedDto
             {
                 MovieId = movie.MovieId,
                 Title = movie.Title,
@@ -59,11 +59,11 @@ namespace MSQBot_API.Business.Mappers
         /// </summary>
         /// <param name="movies">list of movie entities to map</param>
         /// <returns>list of mapped movie detailled DTOs</returns>
-        public static List<MovieDetailsDto>? MapToMovieDetailsDTOs(this List<Movie> movies)
+        public static List<MovieRatedDto>? MapToMovieDetailsDTOs(this List<Movie> movies)
         {
             if (movies == null) throw new ArgumentNullException(nameof(movies));
 
-            var result = new List<MovieDetailsDto>();
+            var result = new List<MovieRatedDto>();
             movies.ForEach(movie => result.Add(movie.MapToMovieDetailsDTO()));
 
             return result;

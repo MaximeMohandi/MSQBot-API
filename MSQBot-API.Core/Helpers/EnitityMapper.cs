@@ -1,7 +1,5 @@
-﻿using MSQBot_API.Entities.DTOs;
-using MSQBot_API.Entities.Models;
-
-namespace MSQBot_API.Helpers
+﻿
+namespace MSQBot_API.Core.Helpers
 {
     /// <summary>
     /// Map Entities to DTOs

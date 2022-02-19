@@ -1,14 +1,16 @@
 ﻿using MSQBot_API.Core.DTOs;
+using MSQBot_API.Core.Entities;
+using MSQBot_API.Core.Helpers;
+using MSQBot_API.Core.Interfaces;
 using MSQBot_API.Core.Repositories;
 using MSQBot_API.Interfaces;
-using MSQBot_API.Business.Mappers;
 
-namespace MSQBot_API.Services.MovieServices
+namespace MSQBot_API.Business.Services
 {
     /// <summary>
     /// Services to manage movies data.
     /// </summary>
-    public class MovieServices
+    public class MovieServices : IMovieServices
     {
         private readonly IMovieRepository _repository;
         private readonly IImageScrapperService _imageScrapper;
@@ -23,12 +25,13 @@ namespace MSQBot_API.Services.MovieServices
         }
 
         /// <summary>
-        /// Get all movies with the data attached
+        /// Get a view with all movies and key data
         /// </summary>
         /// <returns></returns>
-        public MoviesViewDto GetMoviesData()
+        public async Task<MoviesViewDto> GetMoviesView()
         {
-            return new MovieDatasDto(GetMovies());
+            List<Movie> movies = await _repository.GetAll();
+            return new MoviesViewDto(movies.MapToMovieRatedDtoDTOs());
         }
 
         /// <summary>
@@ -36,9 +39,10 @@ namespace MSQBot_API.Services.MovieServices
         /// </summary>
         /// <param name="movieId">id movie to fetch</param>
         /// <returns>A movie with all it's rates</returns>
-        public MovieRatedDto GetMovie(int movieId)
+        public async Task<MovieRatedDto> GetMovie(int movieId)
         {
-            return GetMovies().FirstOrDefault(m => m.MovieId == movieId);
+            Movie movie = await _repository.Get(movieId);
+            return movie.MapToMovieRatedDto();
         }
 
         /// <summary>
@@ -47,68 +51,47 @@ namespace MSQBot_API.Services.MovieServices
         /// <returns></returns>
         public async Task<List<MovieDto>> GetMovies()
         {
-            return  MovieMapper.MapToMovieDTOs(await _repository.GetAll());
+            return EntityMapper.MapToMovieDTOs(await _repository.GetAll());
         }
 
         /// <summary>
         /// Add a new movie in database
         /// </summary>
         /// <param name="movie">the new movie to insert</param>
-        public void AddMovie(MovieCreationDto movie)
+        public async Task AddMovie(MovieCreationDto movie)
         {
-            if (_dbContext.Movies.Any(m => m.Title == movie.Title)) throw new ArgumentException(MOVIE_EXIST_ERR);
-
-            _dbContext.Movies.Add(new Movie
+            await _repository.Add(new Movie
             {
                 Title = movie.Title,
                 Poster = _imageScrapper.FindImage(movie.Title + POSTER_SEARCH)
             });
-            _dbContext.SaveChanges();
         }
 
         /// <summary>
         /// Add a poster to all movie that doesn't have one yet
         /// </summary>
-        public void UpdateAllMoviePoster()
+        public async Task UpdateAllMoviePoster()
         {
-            foreach (Movie movie in _dbContext.Movies)
+            var movies = await _repository.GetAll();
+            foreach (Movie movie in movies.Where(m => m.Poster is null))
             {
-                if (movie.Poster is null)
-                {
                     movie.Poster = _imageScrapper.FindImage(movie.Title + POSTER_SEARCH);
-                    _dbContext.Movies.Update(movie);
-                }
+                    await _repository.Update(movie);
             }
-            _dbContext.SaveChanges();
-        }
-
-        /// <summary>
-        /// Add a new rate to a movie in database
-        /// </summary>
-        /// <param name="movieRated">data used to rate a movie</param>
-        public void RateMovie(MovieRateCreationDto movieRated)
-        {
-            _dbContext.Rates.Add(new Rate
-            {
-                MovieId = movieRated.MoviId,
-                UserId = movieRated.UserId,
-                Note = movieRated.Rate
-            });
-            UpdateMovieSeenDate(_dbContext.Movies.FirstOrDefault(m => m.MovieId == movieRated.MoviId));
-            _dbContext.SaveChanges();
         }
 
         /// <summary>
         /// Update seen date of movie if it's not already set.
         /// </summary>
         /// <param name="movie">movie to update</param>
-        public void UpdateMovieSeenDate(Movie movie)
+        public async Task UpdateMovieSeenDate(int movieId)
         {
-            if (movie.SeenDate is null)
+            var movieToUpdate = await _repository.Get(movieId);
+
+            if (movieToUpdate.SeenDate is null)
             {
-                movie.SeenDate = DateTime.Now;
-                _dbContext.Movies.Update(movie);
-                _dbContext.SaveChanges();
+                movieToUpdate.SeenDate = DateTime.Now;
+                await _repository.Update(movieToUpdate);
             }
         }
 
@@ -116,17 +99,16 @@ namespace MSQBot_API.Services.MovieServices
         /// Replace the title of a movie.
         /// </summary>
         /// <param name="newMovieTitle">DTO representing the change</param>
-        public void UpdateMovieName(MovieTitleUpdateDto newMovieTitle)
+        public async Task UpdateMovieName(MovieTitleUpdateDto newMovieTitle)
         {
-            if (newMovieTitle.NewTitle is null)
+            if (newMovieTitle.NewTitle is null || newMovieTitle.NewTitle == string.Empty)
                 throw new ArgumentException("New Title can't be null");
 
-            _dbContext.Movies.Update(new Movie
+            await _repository.Update(new Movie
             {
                 MovieId = newMovieTitle.MovieId,
                 Title = newMovieTitle.NewTitle
             });
-            _dbContext.SaveChanges();
         }
     }
 }

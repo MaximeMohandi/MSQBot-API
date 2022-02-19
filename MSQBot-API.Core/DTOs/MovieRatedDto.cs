@@ -10,7 +10,7 @@ namespace MSQBot_API.Core.DTOs
         /// <summary>
         /// All rates given to the movie
         /// </summary>
-        public List<IRate>? Rates { get; set; }
+        public List<RatesMovieDto>? Rates { get; set; }
 
         /// <summary>
         /// Average rate of the movie

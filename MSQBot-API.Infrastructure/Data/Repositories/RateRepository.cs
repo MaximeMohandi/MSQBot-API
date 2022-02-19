@@ -11,7 +11,7 @@ namespace MSQBot_API.Infrastructure.Data.Repositories
         {
         }
 
-        public async Task<IReadOnlyList<Rate>> GetRatesUser(long userId)
+        public async Task<List<Rate>> GetRatesUser(long userId)
         {
             return await _dbContext.Rates
                 .Include(r => r.Movie)

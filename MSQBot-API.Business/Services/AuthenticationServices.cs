@@ -1,23 +1,20 @@
-﻿using Microsoft.IdentityModel.Tokens;
+﻿using MSQBot_API.Core.DTOs;
+using MSQBot_API.Core.Entities;
+using MSQBot_API.Core.Helpers;
+using MSQBot_API.Core.Repositories;
 using MSQBot_API.Entities.DTOs;
-using MSQBot_API.Entities.Models;
-using MSQBot_API.Helpers;
 using MSQBot_API.Interfaces;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
-using static Microsoft.AspNetCore.Http.HttpRequest;
 
-namespace MSQBot_API.Services
+namespace MSQBot_API.Business.Services
 {
     public class AuthenticationServices : IUserAuthenticationServices
     {
-        private readonly MSQBotDbContext _dbContext;
+        private readonly IUserRepository _userRepository;
         private readonly JwtSettings _jwtSettings;
 
-        public AuthenticationServices(MSQBotDbContext dbContext, JwtSettings jwtSettings)
+        public AuthenticationServices(IUserRepository userRepository, JwtSettings jwtSettings)
         {
-            _dbContext = dbContext;
+            _userRepository = userRepository;
             _jwtSettings = jwtSettings;
         }
 
@@ -28,11 +25,11 @@ namespace MSQBot_API.Services
             if (IsUserExist(userToAuthenticate))
             {
                 var user = GetUser(userToAuthenticate);
-                return JwtHelpers.GetTokenKey(new UserTokenDto()
+                return JwtHelpers.GetTokenKey(new UserTokenDto
                 {
                     Id = Guid.NewGuid(),
-                    UserId = user.UserId,
-                    UserName = user.Name,
+                    UserId = userToAuthenticate.UserId,
+                    UserName = userToAuthenticate.Name,
                 }, _jwtSettings);
             }
 
@@ -51,7 +48,7 @@ namespace MSQBot_API.Services
 
         private bool IsUserExist(UserDto user)
         {
-            return _dbContext.Users.Any(u => u.UserId == user.UserId);
+            return _userRepository.IsUserExist(new User { Name = user.Name, UserId = user.UserId });
         }
 
         /// <summary>
@@ -60,10 +57,9 @@ namespace MSQBot_API.Services
         /// <param name="user">user asked by the client</param>
         /// <returns>A user entity from database</returns>
         /// <exception cref="KeyNotFoundException">No user has been found</exception>
-        private User GetUser(UserDto user)
+        private async Task<User> GetUser(UserDto user)
         {
-            return _dbContext.Users.FirstOrDefault(u => u.UserId == user.UserId && u.Name == user.Name)
-                ?? throw new KeyNotFoundException();
+            return await _userRepository.Get(user.UserId);
         }
     }
 }

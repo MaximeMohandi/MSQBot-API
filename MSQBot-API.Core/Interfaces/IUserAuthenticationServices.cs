@@ -1,4 +1,5 @@
-﻿using MSQBot_API.Entities.DTOs;
+﻿using MSQBot_API.Core.DTOs;
+using MSQBot_API.Entities.DTOs;
 
 namespace MSQBot_API.Interfaces
 {

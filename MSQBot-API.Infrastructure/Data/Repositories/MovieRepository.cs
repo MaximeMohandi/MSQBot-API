@@ -1,12 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MSQBot_API.Core.Entities;
+using MSQBot_API.Core.Exception;
 using MSQBot_API.Core.Repositories;
 using MSQBot_API.Infrastructure.Data.Repositories.Base;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MSQBot_API.Infrastructure.Data.Repositories
 {
@@ -18,18 +14,35 @@ namespace MSQBot_API.Infrastructure.Data.Repositories
 
         public override async Task<List<Movie>> GetAll()
         {
-            return await _dbContext.Set<Movie>()
+            var movies = await _dbContext.Movies
                 .Include(r => r.Rates)
                 .ThenInclude(r => r.User)
                 .ToListAsync();
+            if (movies.Any())
+            {
+                return movies;
+            }
+
+            throw new NoMovieFoundException();
         }
 
         public override async Task<Movie> Get(int id)
         {
-            return await _dbContext.Set<Movie>()
+            return await _dbContext.Movies
                 .Include(r => r.Rates)
                 .ThenInclude(r => r.User)
-                .FirstOrDefaultAsync(m => m.MovieId == id);
+                .FirstOrDefaultAsync(m => m.MovieId == id)
+           ?? throw new NoMovieFoundException();
+
+        }
+        public override async Task Add(Movie movie)
+        {
+            bool isExist = _dbContext.Movies.Any(m => m.Title == movie.Title);
+            if (isExist)
+            {
+                throw new MovieAlreadyExistException(movie.Title);
+            }
+            await base.Add(movie);
         }
     }
 }

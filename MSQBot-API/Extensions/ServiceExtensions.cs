@@ -1,14 +1,13 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using MSQBot_API.Entities.DTOs;
-using MSQBot_API.Entities.Models;
+using MSQBot_API.Business.Services;
+using MSQBot_API.Business.Services.ImageScrapper;
+using MSQBot_API.Core.Entities;
+using MSQBot_API.Core.Repositories;
+using MSQBot_API.Infrastructure;
+using MSQBot_API.Infrastructure.Data.Repositories;
 using MSQBot_API.Interfaces;
-using MSQBot_API.Services;
-using MSQBot_API.Services.ImageScrapper;
-using MSQBot_API.Services.MovieServices;
-using System.Text;
 
 namespace MSQBot_API.Extensions
 {
@@ -47,7 +46,7 @@ namespace MSQBot_API.Extensions
         /// Configure connection to the Mysql server
         /// </summary>
         /// <param name="services"></param>
-        /// <param name="config"></param>
+        /// <param name="configuration"></param>
         public static void ConfigureMySqlContext(this IServiceCollection services, IConfiguration configuration)
         {
             var connectionString = configuration.GetConnectionString("MSQBotDb");
@@ -60,10 +59,16 @@ namespace MSQBot_API.Extensions
         /// <param name="services"></param>
         public static void ConfigureBusinessServices(this IServiceCollection services)
         {
+            //services
             services.AddScoped<MovieServices, MovieServices>();
             services.AddScoped<RateServices, RateServices>();
             services.AddScoped<IUserAuthenticationServices, AuthenticationServices>();
             services.AddScoped<IImageScrapperService, GoogleImageScrapperServices>();
+
+            //repositories
+            services.AddScoped<IMovieRepository, MovieRepository>();
+            services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IRateRepository, RateRepository>();
         }
 
         public static void ConfigureAuthentication(this IServiceCollection services, IConfiguration configuration)

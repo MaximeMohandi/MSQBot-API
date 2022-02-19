@@ -8,6 +8,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="HtmlAgilityPack" Version="1.11.42" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\MSQBot-API.Core\MSQBot-API.Core.csproj" />
     <ProjectReference Include="..\MSQBot-API.Infrastructure\MSQBot-API.Infrastructure.csproj" />
   </ItemGroup>

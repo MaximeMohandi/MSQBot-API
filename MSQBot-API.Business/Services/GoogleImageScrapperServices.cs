@@ -1,8 +1,8 @@
 ﻿using HtmlAgilityPack;
-using MSQBot_API.Entities.Enums;
+using MSQBot_API.Core.Enums;
 using MSQBot_API.Interfaces;
 
-namespace MSQBot_API.Services.ImageScrapper
+namespace MSQBot_API.Business.Services.ImageScrapper
 {
     public class GoogleImageScrapperServices : IImageScrapperService
     {

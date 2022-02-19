@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MSQBot_API.Entities.DTOs;
-using MSQBot_API.Services;
+using MSQBot_API.Business.Services;
 
 namespace MSQBot_API.Controllers
 {

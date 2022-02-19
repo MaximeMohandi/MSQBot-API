@@ -11,7 +11,7 @@ namespace MSQBot_API.Infrastructure.Data.Repositories.Base
             _dbContext = dbContext;
         }
 
-        public async Task Add(T entity)
+        public virtual async Task Add(T entity)
         {
             await _dbContext.Set<T>().AddAsync(entity);
             await _dbContext.SaveChangesAsync();

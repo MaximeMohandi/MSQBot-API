@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using MSQBot_API.Core.DTOs;
 using MSQBot_API.Entities.DTOs;
 using MSQBot_API.Interfaces;
 

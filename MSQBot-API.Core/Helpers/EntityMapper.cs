@@ -1,10 +1,13 @@
 ﻿
+using MSQBot_API.Core.DTOs;
+using MSQBot_API.Core.Entities;
+
 namespace MSQBot_API.Core.Helpers
 {
     /// <summary>
     /// Map Entities to DTOs
     /// </summary>
-    public static class EnitityMapper
+    public static class EntityMapper
     {
         #region MovieDTO mapper
 
@@ -46,11 +49,11 @@ namespace MSQBot_API.Core.Helpers
         /// </summary>
         /// <param name="movie">Movie entitie to map</param>
         /// <returns>mapped movie detailled DTO</returns>
-        public static MovieDetailsDto MapToMovieDetailsDTO(this Movie movie)
+        public static MovieRatedDto MapToMovieRatedDto(this Movie movie)
         {
             if (movie == null) throw new ArgumentNullException(nameof(movie));
 
-            return new MovieDetailsDto
+            return new MovieRatedDto
             {
                 MovieId = movie.MovieId,
                 Title = movie.Title,
@@ -66,12 +69,12 @@ namespace MSQBot_API.Core.Helpers
         /// </summary>
         /// <param name="movies">list of movie entities to map</param>
         /// <returns>list of mapped movie detailled DTOs</returns>
-        public static List<MovieDetailsDto>? MapToMovieDetailsDTOs(this List<Movie> movies)
+        public static List<MovieRatedDto>? MapToMovieRatedDtoDTOs(this List<Movie> movies)
         {
             if (movies == null) throw new ArgumentNullException(nameof(movies));
 
-            var result = new List<MovieDetailsDto>();
-            movies.ForEach(movie => result.Add(movie.MapToMovieDetailsDTO()));
+            var result = new List<MovieRatedDto>();
+            movies.ForEach(movie => result.Add(movie.MapToMovieRatedDto()));
 
             return result;
         }

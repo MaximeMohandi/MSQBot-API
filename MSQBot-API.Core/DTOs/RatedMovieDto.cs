@@ -5,7 +5,6 @@
     /// </summary>
     public class RatesMovieDto : RateDtoBase
     {
-        private decimal? _rate;
 
         /// <summary>
         /// Movie Rated

@@ -66,7 +66,7 @@ namespace MSQBot_API.Core.Helpers
                     ExpiredTime = new DateTimeOffset(_expirationTime).DateTime
                 };
             }
-            catch (Exception)
+            catch (System.Exception)
             {
                 throw;
             }

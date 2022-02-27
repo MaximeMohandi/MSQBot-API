@@ -3,31 +3,31 @@
     /// <summary>
     /// Base movie datas
     /// </summary>
-    public class MovieDto
+    public record MovieDto
     {
         /// <summary>
         /// Movie unique id
         /// </summary>
-        public int MovieId { get; set; }
+        public int MovieId { get; init; }
 
         /// <summary>
         /// movie title
         /// </summary>
-        public string Title { get; set; } = string.Empty;
+        public string Title { get; init; } = string.Empty;
 
         /// <summary>
         /// Movie poster
         /// </summary>
-        public string Poster { get; set; } = string.Empty;
+        public string Poster { get; init; } = string.Empty;
 
         /// <summary>
         /// The date when the movie has been added
         /// </summary>
-        public DateTime AddedDate { get; set; }
+        public DateTime AddedDate { get; init; }
 
         /// <summary>
         /// Date when the movie has been seen
         /// </summary>
-        public DateTime? SeenDate { get; set; }
+        public DateTime? SeenDate { get; init; }
     }
 }

@@ -14,6 +14,6 @@ namespace MSQBot_API.Core.DTOs
         /// User Name
         /// </summary>
         [Required]
-        public string Name { get; set; }
+        public string Name { get; set; } = string.Empty;
     }
 }

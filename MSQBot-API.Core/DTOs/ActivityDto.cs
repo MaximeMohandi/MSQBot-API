@@ -3,21 +3,21 @@
     /// <summary>
     /// Represent an user action made on database
     /// </summary>
-    public class ActivityDto
+    public record ActivityDto
     {
         /// <summary>
         /// Date of the action
         /// </summary>
-        public DateTime Date { get; set; }
+        public DateTime Date { get; init; }
 
         /// <summary>
         /// The title of the event
         /// </summary>
-        public string Title { get; set; } = string.Empty;
+        public string Title { get; init; } = string.Empty;
 
         /// <summary>
         /// The event description
         /// </summary>
-        public string Description { get; set; } = string.Empty;
+        public string Description { get; init; } = string.Empty;
     }
 }

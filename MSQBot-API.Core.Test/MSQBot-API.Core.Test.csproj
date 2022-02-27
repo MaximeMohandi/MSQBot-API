@@ -2,27 +2,22 @@
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
-    <RootNamespace>MSQBot_API.Test</RootNamespace>
+    <RootNamespace>MSQBot_API.Core.Test</RootNamespace>
     <Nullable>enable</Nullable>
 
     <IsPackable>false</IsPackable>
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Mock\**" />
-    <EmbeddedResource Remove="Mock\**" />
-    <None Remove="Mock\**" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.11.0" />
+    <PackageReference Include="NSubstitute" Version="4.3.0" />
     <PackageReference Include="NUnit" Version="3.13.2" />
     <PackageReference Include="NUnit3TestAdapter" Version="4.0.0" />
     <PackageReference Include="coverlet.collector" Version="3.1.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\MSQBot-API.Business\MSQBot-API.Business.csproj" />
+    <ProjectReference Include="..\MSQBot-API.Core\MSQBot-API.Core.csproj" />
   </ItemGroup>
 
 </Project>

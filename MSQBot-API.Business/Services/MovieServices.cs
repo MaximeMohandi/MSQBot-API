@@ -10,13 +10,12 @@ namespace MSQBot_API.Business.Services
     /// <summary>
     /// Services to manage movies data.
     /// </summary>
-    public class MovieServices : IMovieServices
+    public class MovieServices : IMovieServices, IContainPoster
     {
         private readonly IMovieRepository _repository;
         private readonly IImageScrapperService _imageScrapper;
 
         private readonly string POSTER_SEARCH = " movie poster";
-        private readonly string MOVIE_EXIST_ERR = "The Movie you try to add already exist";
 
         public MovieServices(IMovieRepository repository, IImageScrapperService imageScrapper)
         {
@@ -24,14 +23,10 @@ namespace MSQBot_API.Business.Services
             _imageScrapper = imageScrapper;
         }
 
-        /// <summary>
-        /// Get a view with all movies and key data
-        /// </summary>
-        /// <returns></returns>
-        public async Task<MoviesViewDto> GetMoviesView()
+        public async Task<MoviesViewDto> GetGlobalView()
         {
             List<Movie> movies = await _repository.GetAll();
-            return new MoviesViewDto(movies.MapToMovieRatedDtoDTOs());
+            return movies.MapToViewDto();
         }
 
         /// <summary>
@@ -39,26 +34,26 @@ namespace MSQBot_API.Business.Services
         /// </summary>
         /// <param name="movieId">id movie to fetch</param>
         /// <returns>A movie with all it's rates</returns>
-        public async Task<MovieRatedDto> GetMovie(int movieId)
+        public async Task<MovieRatedDto> Get<T>(int movieId)
         {
             Movie movie = await _repository.Get(movieId);
-            return movie.MapToMovieRatedDto();
+            return movie.MapToRatedDTO();
         }
 
         /// <summary>
         /// Fetch all movies
         /// </summary>
         /// <returns></returns>
-        public async Task<List<MovieDto>> GetMovies()
+        public async Task<List<MovieDto>> GetAll<T>()
         {
-            return EntityMapper.MapToMovieDTOs(await _repository.GetAll());
+            return EntityMapper.MapToDTO(await _repository.GetAll());
         }
 
         /// <summary>
         /// Add a new movie in database
         /// </summary>
         /// <param name="movie">the new movie to insert</param>
-        public async Task AddMovie(MovieCreationDto movie)
+        public async Task Add<MovieCreationDto>(MovieCreationDto movie)
         {
             await _repository.Add(new Movie
             {
@@ -84,7 +79,7 @@ namespace MSQBot_API.Business.Services
         /// Update seen date of movie if it's not already set.
         /// </summary>
         /// <param name="movie">movie to update</param>
-        public async Task UpdateMovieSeenDate(int movieId)
+        public async Task UpdateSeenDate(int movieId)
         {
             var movieToUpdate = await _repository.Get(movieId);
 
@@ -99,9 +94,9 @@ namespace MSQBot_API.Business.Services
         /// Replace the title of a movie.
         /// </summary>
         /// <param name="newMovieTitle">DTO representing the change</param>
-        public async Task UpdateMovieName(MovieTitleUpdateDto newMovieTitle)
+        public async Task UpdateName(MovieTitleUpdateDto newMovieTitle)
         {
-            if (newMovieTitle.NewTitle is null || newMovieTitle.NewTitle == string.Empty)
+            if (newMovieTitle.NewTitle == string.Empty)
                 throw new ArgumentException("New Title can't be null");
 
             await _repository.Update(new Movie

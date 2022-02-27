@@ -27,7 +27,7 @@ namespace MSQBot_API.Business.Services
         public async Task<List<RatesMovieDto>> GetRatesUser(long userId)
         {
             var ratesUser = await _repository.GetRatesUser(userId);
-            return ratesUser.MapRatesToDTOs();
+            return ratesUser.MapToDTO();
         }
 
         /// <summary>
@@ -42,7 +42,7 @@ namespace MSQBot_API.Business.Services
                 UserId = movieRated.UserId,
                 Note = movieRated.Rate
             });
-            await movieServices.UpdateMovieSeenDate(movieRated.MoviId);
+            await movieServices.UpdateSeenDate(movieRated.MoviId);
         }
 
     }

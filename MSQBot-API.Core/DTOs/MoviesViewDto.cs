@@ -18,12 +18,12 @@
         /// <summary>
         /// Movie with the best average rate
         /// </summary>
-        public MovieRatedDto? BestMovie { get; init; } = null;
+        public MovieDto? BestMovie { get; init; } = null;
 
         /// <summary>
         /// Movie with worst average rate
         /// </summary>
-        public MovieRatedDto? WorstMovie { get; init; } = null;
+        public MovieDto? WorstMovie { get; init; } = null;
 
         /// <summary>
         /// Average rate given to movies
@@ -33,7 +33,7 @@
         /// <summary>
         /// All the movies
         /// </summary>
-        public List<MovieRatedDto>? Movies { get; init; } = null;
+        public List<MovieDto>? Movies { get; init; } = null;
 
         /// <summary>
         /// Last activities on the movies data

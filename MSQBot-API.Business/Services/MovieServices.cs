@@ -34,26 +34,27 @@ namespace MSQBot_API.Business.Services
         /// </summary>
         /// <param name="movieId">id movie to fetch</param>
         /// <returns>A movie with all it's rates</returns>
-        public async Task<MovieRatedDto> Get<T>(int movieId)
+        public async Task<MovieDto> Get(int id)
         {
-            Movie movie = await _repository.Get(movieId);
-            return movie.MapToRatedDTO();
+            Movie movie = await _repository.Get(id);
+            return movie.MapToDTO();
         }
 
         /// <summary>
         /// Fetch all movies
         /// </summary>
         /// <returns></returns>
-        public async Task<List<MovieDto>> GetAll<T>()
+        public async Task<List<MovieDto>> GetAll()
         {
-            return EntityMapper.MapToDTO(await _repository.GetAll());
+            var movies = await _repository.GetAll();
+            return movies.MapToDTO();
         }
 
         /// <summary>
         /// Add a new movie in database
         /// </summary>
         /// <param name="movie">the new movie to insert</param>
-        public async Task Add<MovieCreationDto>(MovieCreationDto movie)
+        public async Task Add(MovieCreationDto movie)
         {
             await _repository.Add(new Movie
             {

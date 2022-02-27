@@ -3,28 +3,28 @@
     /// <summary>
     /// Business services contract
     /// </summary>
-    public interface IBusinessServices
+    /// <typeparam name="TReturn">Return type of the service</typeparam>
+    /// <typeparam name="TCreation">Type od the entity to create entity</typeparam>
+    public interface IBusinessServices<TReturn, TCreation> 
+        where TReturn : class 
+        where TCreation : class
     {
         /// <summary>
         /// Get one element by it's Id
         /// </summary>
-        /// <typeparam name="T">type of element to return</typeparam>
         /// <param name="id">id use to identify the element</param>
         /// <returns>a element with the given id</returns>
-        public Task<T> Get<T>(int id) where T : class;
+        public Task<TReturn> Get(int id);
 
         /// <summary>
         /// Get All the element
         /// </summary>
-        /// <typeparam name="T">type of elmenet to return</typeparam>
         /// <returns>list of all element</returns>
-        public Task<List<T>> GetAll<T>() where T : class;
+        public Task<List<TReturn>> GetAll();
 
         /// <summary>
         /// Add a new element
         /// </summary>
-        /// <typeparam name="T">type of element to add</typeparam>
-        /// <param name="source">element to add</param>
-        public Task Add<T>(T source) where T : class;
+        public Task Add(TCreation entity);
     }
 }

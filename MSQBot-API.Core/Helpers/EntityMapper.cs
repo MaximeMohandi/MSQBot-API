@@ -14,7 +14,7 @@ namespace MSQBot_API.Core.Helpers
 
         public static MoviesViewDto MapToViewDto(this List<Movie> movies)
         {
-            List<MovieRatedDto> ratedMovies = movies.MapToRatedDTO();
+            List<MovieDto> ratedMovies = movies.MapToDTO();
             return new()
             {
                 Movies = ratedMovies,
@@ -27,7 +27,7 @@ namespace MSQBot_API.Core.Helpers
             };
         }
 
-        private static List<ActivityDto> GenerateActivities(List<MovieRatedDto> movies)
+        private static List<ActivityDto> GenerateActivities(List<MovieDto> movies)
         {
             var result = new List<ActivityDto>();
 
@@ -60,50 +60,17 @@ namespace MSQBot_API.Core.Helpers
         }
 
         /// <summary>
-        /// Map a movie entitie to a movie DTO
-        /// </summary>
-        /// <param name="movie">Movie entitie to map</param>
-        /// <returns>mapped movie DTO</returns>
-        public static MovieDto MapToDTO(this Movie movie)
-        {
-            if (movie == null) throw new ArgumentNullException(nameof(movie));
-            return new MovieDto
-            {
-                MovieId = movie.MovieId,
-                Title = movie.Title,
-                AddedDate = movie.AddedDate,
-                SeenDate = movie.SeenDate,
-                Poster = movie.Poster
-            };
-        }
-
-        /// <summary>
-        /// Map list of movie entities to list of movie DTO
-        /// </summary>
-        /// <param name="movies">list of movie entities to map</param>
-        /// <returns>list of mapped movie DTOs</returns>
-        public static List<MovieDto> MapToDTO(this List<Movie> movies)
-        {
-            if (movies == null) throw new ArgumentNullException(nameof(movies));
-
-            var result = new List<MovieDto>();
-            movies.ForEach(movie => result.Add(movie.MapToDTO()));
-
-            return result;
-        }
-
-        /// <summary>
         /// Map a movie entitie to a detailled movie DTO
         /// </summary>
         /// <param name="movie">Movie entitie to map</param>
         /// <returns>mapped movie detailled DTO</returns>
-        public static MovieRatedDto MapToRatedDTO(this Movie movie)
+        public static MovieDto MapToDTO(this Movie movie)
         {
             if (movie == null) throw new ArgumentNullException(nameof(movie));
 
             List<RatesMovieDto> ratesMovie = movie.Rates.MapToDTO();
 
-            return new MovieRatedDto
+            return new MovieDto
             {
                 MovieId = movie.MovieId,
                 Title = movie.Title,
@@ -122,12 +89,12 @@ namespace MSQBot_API.Core.Helpers
         /// </summary>
         /// <param name="movies">list of movie entities to map</param>
         /// <returns>list of mapped movie detailled DTOs</returns>
-        public static List<MovieRatedDto>? MapToRatedDTO(this List<Movie> movies)
+        public static List<MovieDto>? MapToDTO(this List<Movie> movies)
         {
             if (movies == null) throw new ArgumentNullException(nameof(movies));
 
-            var result = new List<MovieRatedDto>();
-            movies.ForEach(movie => result.Add(movie.MapToRatedDTO()));
+            var result = new List<MovieDto>();
+            movies.ForEach(movie => result.Add(movie.MapToDTO()));
 
             return result;
         }

@@ -10,7 +10,7 @@ namespace MSQBot_API.Business.Services
     /// <summary>
     /// Service to manage rates datas
     /// </summary>
-    public class RateServices
+    public class RateServices : IRateServices
     {
         private readonly IRateRepository _repository;
 
@@ -19,22 +19,13 @@ namespace MSQBot_API.Business.Services
             _repository = repository;
         }
 
-        /// <summary>
-        /// Get all the rate a user had given to a movie.
-        /// </summary>
-        /// <param name="userId"></param>
-        /// <returns>List of rates with movie associated for a user</returns>
         public async Task<List<RatesMovieDto>> GetRatesUser(long userId)
         {
             var ratesUser = await _repository.GetRatesUser(userId);
             return ratesUser.MapToDTO();
         }
 
-        /// <summary>
-        /// Add a new rate to a movie in database
-        /// </summary>
-        /// <param name="movieRated">data used to rate a movie</param>
-        public async Task RateMovie(IMovieServices movieServices, MovieRateCreationDto movieRated)
+        public async Task RateMovie(MovieRateCreationDto movieRated, IMovieServices movieServices)
         {
             await _repository.Add(new Rate
             {

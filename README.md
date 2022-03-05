@@ -38,5 +38,6 @@ You can find the other application on my [GitHub](https://github.com/MaximeMohan
 
 ## ROADMAP
 
-- implement cusom base controller
-- testing 
+- in memomry database test
+- add interface on all services 
+- add imageProcessor class to use in the image scrapper service 

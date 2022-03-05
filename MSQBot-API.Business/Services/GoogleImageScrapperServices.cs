@@ -6,12 +6,11 @@ namespace MSQBot_API.Business.Services.ImageScrapper
 {
     public class GoogleImageScrapperServices : IImageScrapperService
     {
-        //private readonly ILogger _logger;
         private readonly HtmlWeb _web;
 
         private readonly string _searchHost = "https://www.google.fr/search?q=";
 
-        public GoogleImageScrapperServices(/*ILogger logger*/)
+        public GoogleImageScrapperServices()
         {
             _web = new HtmlWeb();
         }
@@ -33,7 +32,6 @@ namespace MSQBot_API.Business.Services.ImageScrapper
             }
             catch (Exception ex)
             {
-                //_logger.LogError("Something went wrong when fetching image from Google");
                 return String.Empty;
             }
         }

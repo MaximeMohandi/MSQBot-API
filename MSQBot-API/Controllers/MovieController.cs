@@ -69,7 +69,7 @@ namespace MSQBot_API.Controllers
         {
             try
             {
-                var movie = await _movieServices.Get(id);
+                var movie = await _movieServices.Get<MovieRatedDto>(id);
 
                 return Ok(movie);
             }
@@ -122,7 +122,7 @@ namespace MSQBot_API.Controllers
                 if (movieRated == null) return BadRequest(MovieMessages.ERR_MOVIE_ARGS_NULL);
                 if (!ModelState.IsValid) return BadRequest(MovieMessages.ERR_MOVIE_INVALID_BODY);
 
-                await _rateServices.RateMovie(_movieServices, movieRated);
+                await _rateServices.RateMovie(movieRated, _movieServices);
 
                 return Ok();
             }

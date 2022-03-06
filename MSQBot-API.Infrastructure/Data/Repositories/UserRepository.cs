@@ -16,6 +16,12 @@ namespace MSQBot_API.Infrastructure.Data.Repositories
             return _dbContext.Users.Any(u => u.UserId == user.UserId && u.Name == user.Name);
         }
 
+        /// <summary>
+        /// Get user with given Id
+        /// </summary>
+        /// <param name="id">Id user to fetch</param>
+        /// <returns>User</returns>
+        /// <exception cref="UserNotFoundException">the user with this id doesn't exist</exception>
         public async Task<User> Get(long id)
         {
             return await _dbContext.Users.FindAsync(id)

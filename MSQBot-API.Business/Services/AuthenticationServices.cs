@@ -46,6 +46,11 @@ namespace MSQBot_API.Business.Services
             throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// Check that user exist in database
+        /// </summary>
+        /// <param name="user">User to check</param>
+        /// <returns>True if user exist, false otherwise.</returns>
         private bool IsUserExist(UserDto user)
         {
             return _userRepository.IsUserExist(new User { Name = user.Name, UserId = user.UserId });
@@ -56,7 +61,6 @@ namespace MSQBot_API.Business.Services
         /// </summary>
         /// <param name="user">user asked by the client</param>
         /// <returns>A user entity from database</returns>
-        /// <exception cref="KeyNotFoundException">No user has been found</exception>
         private async Task<User> GetUser(UserDto user)
         {
             return await _userRepository.Get(user.UserId);

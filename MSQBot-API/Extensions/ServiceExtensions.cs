@@ -25,8 +25,9 @@ namespace MSQBot_API.Extensions
                 options.AddPolicy("CorsPolicy",
                     builder => builder
                     .AllowAnyOrigin()
-                    .WithMethods("GET", "POST")
-                    .WithHeaders("Origin", "X-Requested-With", "Content-Type", "Accept"));
+                    .AllowAnyHeader()
+                    .AllowAnyMethod());
+
             });
         }
 
@@ -74,7 +75,7 @@ namespace MSQBot_API.Extensions
         public static void ConfigureAuthentication(this IServiceCollection services, IConfiguration configuration)
         {
             //add jwt settings
-            var bindJwtSettings = new JwtSettings();
+            var bindJwtSettings = new JwtConfiguration();
             configuration.Bind("JWT", bindJwtSettings);
             services.AddSingleton(bindJwtSettings);
 

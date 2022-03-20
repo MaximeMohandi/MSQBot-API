@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MSQBot_API.Core.DTOs;
+using MSQBot_API.Core.Exception;
 using MSQBot_API.Entities.DTOs;
 using MSQBot_API.Interfaces;
 
@@ -26,11 +27,12 @@ namespace MSQBot_API.Controllers
         }
 
         [HttpPost("authenticate")]
-        public ActionResult<UserTokenDto> AuthenticateUser([FromBody] UserDto user)
+        public async Task<ActionResult<UserTokenDto>> AuthenticateUser([FromBody] UserDto user)
         {
             try
             {
-                return Ok(_userAuthenticationServices.Authenticate(user));
+                var authToken = await _userAuthenticationServices.Authenticate(user);
+                return Ok(authToken);
             }
             catch (ArgumentNullException ex)
             {
@@ -39,6 +41,10 @@ namespace MSQBot_API.Controllers
             catch (KeyNotFoundException ex)
             {
                 return BadRequest(ex.Message);
+            }
+            catch (UserNotFoundException)
+            {
+                return NotFound(user);
             }
             catch (Exception ex)
             {

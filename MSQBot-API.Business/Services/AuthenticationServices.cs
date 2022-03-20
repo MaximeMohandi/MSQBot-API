@@ -10,38 +10,33 @@ namespace MSQBot_API.Business.Services
     public class AuthenticationServices : IUserAuthenticationServices
     {
         private readonly IUserRepository _userRepository;
-        private readonly JwtSettings _jwtSettings;
+        private readonly JwtConfiguration _jwtSettings;
 
-        public AuthenticationServices(IUserRepository userRepository, JwtSettings jwtSettings)
+        public AuthenticationServices(IUserRepository userRepository, JwtConfiguration jwtSettings)
         {
             _userRepository = userRepository;
             _jwtSettings = jwtSettings;
         }
 
-        public UserTokenDto Authenticate(UserDto userToAuthenticate)
+        public async Task<UserTokenDto> Authenticate(UserDto userToAuthenticate)
         {
             if (userToAuthenticate == null) throw new ArgumentNullException(nameof(userToAuthenticate));
 
             if (IsUserExist(userToAuthenticate))
             {
-                var user = GetUser(userToAuthenticate);
+                User user = await GetUser(userToAuthenticate);
                 return JwtHelpers.GetTokenKey(new UserTokenDto
                 {
                     Id = Guid.NewGuid(),
-                    UserId = userToAuthenticate.UserId,
-                    UserName = userToAuthenticate.Name,
+                    UserId = user.UserId,
+                    UserName = user.Name,
                 }, _jwtSettings);
             }
 
             throw new KeyNotFoundException();
         }
 
-        /// <summary>
-        /// Refresh user token
-        /// </summary>
-        /// <param name="authentifiedUser"></param>
-        /// <returns></returns>
-        public UserTokenDto RefreshToken(UserTokenDto authentifiedUser)
+        public Task<UserTokenDto> RefreshToken(UserTokenDto authentifiedUser)
         {
             throw new NotImplementedException();
         }
@@ -53,7 +48,7 @@ namespace MSQBot_API.Business.Services
         /// <returns>True if user exist, false otherwise.</returns>
         private bool IsUserExist(UserDto user)
         {
-            return _userRepository.IsUserExist(new User { Name = user.Name, UserId = user.UserId });
+            return _userRepository.IsUserExist(new User { Name = user.UserName, UserId = user.UserId });
         }
 
         /// <summary>

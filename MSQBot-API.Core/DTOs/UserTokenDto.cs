@@ -39,5 +39,10 @@
         /// Token expiration date
         /// </summary>
         public DateTime ExpiredTime { get; init; }
+
+        /// <summary>
+        /// Refresh token expiration date
+        /// </summary>
+        public DateTime RefreshTokenExpiredTime { get; init; }
     }
 }

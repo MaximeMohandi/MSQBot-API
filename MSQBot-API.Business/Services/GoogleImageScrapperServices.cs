@@ -19,7 +19,7 @@ namespace MSQBot_API.Business.Services.ImageScrapper
         {
             try
             {
-                string googleImagesHost = _searchHost + searchQuery + "&tbm=isch";
+                string googleImagesHost = _searchHost + searchQuery + "&tbm=isch&tbs=isz:l";
                 HtmlDocument doc = _web.Load(googleImagesHost);
 
                 //select first image in google image result

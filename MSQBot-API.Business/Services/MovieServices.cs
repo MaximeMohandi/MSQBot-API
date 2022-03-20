@@ -60,6 +60,7 @@ namespace MSQBot_API.Business.Services
             await _repository.Add(new Movie
             {
                 Title = movie.Title,
+                AddedDate = DateTime.Now,
                 Poster = _imageScrapper.FindImage(movie.Title + POSTER_SEARCH)
             });
         }
@@ -72,8 +73,8 @@ namespace MSQBot_API.Business.Services
             var movies = await _repository.GetAll();
             foreach (Movie movie in movies.Where(m => m.Poster is null))
             {
-                    movie.Poster = _imageScrapper.FindImage(movie.Title + POSTER_SEARCH);
-                    await _repository.Update(movie);
+                movie.Poster = _imageScrapper.FindImage(movie.Title + POSTER_SEARCH);
+                await _repository.Update(movie);
             }
         }
 

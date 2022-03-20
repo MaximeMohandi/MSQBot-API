@@ -3,7 +3,7 @@ using MSQBot_API.Core.Entities;
 
 namespace MSQBot_API.Core.Interfaces
 {
-    public interface IMovieServices : IBusinessServices<MovieDto, MovieCreationDto>
+    public interface IMovieServices : IBusinessServices<MovieRatedDto, MovieCreationDto>
     {
         /// <summary>
         /// Get a view with all movies and key data

@@ -16,6 +16,7 @@ namespace MSQBot_API.Business.Services
         private readonly IImageScrapperService _imageScrapper;
 
         private readonly string POSTER_SEARCH = " movie poster";
+        private readonly string WALLPAPER_SEARCH = " movie wallpaper 2160p";
 
         public MovieServices(IMovieRepository repository, IImageScrapperService imageScrapper)
         {
@@ -34,7 +35,7 @@ namespace MSQBot_API.Business.Services
         /// </summary>
         /// <param name="movieId">id movie to fetch</param>
         /// <returns>A movie with all it's rates</returns>
-        public async Task<MovieDto> Get(int id)
+        public async Task<MovieRatedDto> Get(int id)
         {
             Movie movie = await _repository.Get(id);
             return movie.MapToDTO();
@@ -44,7 +45,7 @@ namespace MSQBot_API.Business.Services
         /// Fetch all movies
         /// </summary>
         /// <returns></returns>
-        public async Task<List<MovieDto>> GetAll()
+        public async Task<List<MovieRatedDto>> GetAll()
         {
             var movies = await _repository.GetAll();
             return movies.MapToDTO();
@@ -105,6 +106,16 @@ namespace MSQBot_API.Business.Services
                 MovieId = newMovieTitle.MovieId,
                 Title = newMovieTitle.NewTitle
             });
+        }
+
+        /// <summary>
+        /// Get a wallpaper for a movie
+        /// </summary>
+        /// <param name="title"></param>
+        /// <returns>Url to the wallpaper</returns>
+        public async Task<string> GetMovieWallpaper(string title)
+        {
+            return _imageScrapper.FindImage(title + WALLPAPER_SEARCH);
         }
     }
 }

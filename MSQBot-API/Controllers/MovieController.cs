@@ -4,27 +4,23 @@ using Microsoft.AspNetCore.Mvc;
 using MSQBot_API.Business.Services;
 using MSQBot_API.Core.DTOs;
 using MSQBot_API.Core.Exception;
-using MSQBot_API.Interfaces;
 using MSQBot_API.Messages;
 
 namespace MSQBot_API.Controllers
 {
     [Route("api/movies")]
     [ApiController]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class MovieController : ControllerBase
     {
-        /*Dependencies*/
         private readonly ILogger _logger;
         private readonly MovieServices _movieServices;
         private readonly RateServices _rateServices;
 
-        /*Movies message codes*/
-
 
         public MovieController(ILogger<MovieController> logger,
             MovieServices movieServices,
-            RateServices rateServices,
-            IImageScrapperService imageScrapper)
+            RateServices rateServices)
         {
             _logger = logger;
             _movieServices = movieServices;
@@ -38,7 +34,7 @@ namespace MSQBot_API.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+
         public async Task<IActionResult> GetAsync()
         {
             try
@@ -69,7 +65,7 @@ namespace MSQBot_API.Controllers
         {
             try
             {
-                var movie = await _movieServices.Get<MovieRatedDto>(id);
+                var movie = await _movieServices.Get(id);
 
                 return Ok(movie);
             }
@@ -90,12 +86,28 @@ namespace MSQBot_API.Controllers
             }
         }
 
+        [AllowAnonymous]
+        [HttpGet("wallpaper/{movie}", Name = "getMovieWallpaper")]
+        public async Task<IActionResult> GetWallpaperMovie(string movie)
+        {
+            try
+            {
+                var wallpaper = await _movieServices.GetMovieWallpaper(movie);
+                return Ok(wallpaper);
+            }
+            catch (Exception)
+            {
+                return StatusCode(500);
+            }
+
+        }
+
         #endregion Getter
 
         #region Post
 
         [HttpPost("movie")]
-        public IActionResult AddMovie([FromBody] MovieCreationDto movie)
+        public async Task<IActionResult> AddMovie([FromBody] MovieCreationDto movie)
         {
             try
             {
@@ -103,7 +115,7 @@ namespace MSQBot_API.Controllers
 
                 if (!ModelState.IsValid) return BadRequest(MovieMessages.ERR_MOVIE_INVALID_BODY);
 
-                _movieServices.Add(movie);
+                await _movieServices.Add(movie);
 
                 return StatusCode(201, MovieMessages.SUCCESS_MOVIE_ADDED);
             }

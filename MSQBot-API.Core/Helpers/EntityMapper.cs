@@ -14,7 +14,7 @@ namespace MSQBot_API.Core.Helpers
 
         public static MoviesViewDto MapToViewDto(this List<Movie> movies)
         {
-            List<MovieDto> ratedMovies = movies.MapToDTO();
+            List<MovieRatedDto> ratedMovies = movies.MapToDTO();
             return new()
             {
                 Movies = ratedMovies,
@@ -27,7 +27,7 @@ namespace MSQBot_API.Core.Helpers
             };
         }
 
-        private static List<ActivityDto> GenerateActivities(List<MovieDto> movies)
+        private static List<ActivityDto> GenerateActivities(List<MovieRatedDto> movies)
         {
             var result = new List<ActivityDto>();
 
@@ -64,13 +64,13 @@ namespace MSQBot_API.Core.Helpers
         /// </summary>
         /// <param name="movie">Movie entitie to map</param>
         /// <returns>mapped movie detailled DTO</returns>
-        public static MovieDto MapToDTO(this Movie movie)
+        public static MovieRatedDto MapToDTO(this Movie movie)
         {
             if (movie == null) throw new ArgumentNullException(nameof(movie));
 
             List<RatesMovieDto> ratesMovie = movie.Rates.MapToDTO();
 
-            return new MovieDto
+            return new MovieRatedDto
             {
                 MovieId = movie.MovieId,
                 Title = movie.Title,
@@ -89,11 +89,11 @@ namespace MSQBot_API.Core.Helpers
         /// </summary>
         /// <param name="movies">list of movie entities to map</param>
         /// <returns>list of mapped movie detailled DTOs</returns>
-        public static List<MovieDto>? MapToDTO(this List<Movie> movies)
+        public static List<MovieRatedDto> MapToDTO(this List<Movie> movies)
         {
             if (movies == null) throw new ArgumentNullException(nameof(movies));
 
-            var result = new List<MovieDto>();
+            var result = new List<MovieRatedDto>();
             movies.ForEach(movie => result.Add(movie.MapToDTO()));
 
             return result;
@@ -136,7 +136,14 @@ namespace MSQBot_API.Core.Helpers
             {
                 User = rate.User.MapToDTO(),
                 Rate = rate.Note,
-                MovieRated = rate.Movie.MapToDTO()
+                Movie = new MovieDto
+                {
+                    MovieId = rate.MovieId,
+                    Title = rate.Movie.Title,
+                    Poster = rate.Movie.Poster,
+                    AddedDate = rate.Movie.AddedDate,
+                    SeenDate = rate.Movie.SeenDate
+                }
             };
         }
 
@@ -151,7 +158,7 @@ namespace MSQBot_API.Core.Helpers
         /// <returns>mapped user DTO</returns>
         public static UserDto? MapToDTO(this User user)
         {
-            return new UserDto { UserId = user.UserId, Name = user.Name };
+            return new UserDto { UserId = user.UserId, UserName = user.Name };
         }
 
         #endregion UserDTO mapper

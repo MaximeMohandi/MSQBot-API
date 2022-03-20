@@ -11,7 +11,7 @@ namespace MSQBot_API.Core.DTOs
         /// <summary>
         /// Movie Rated
         /// </summary>
-        public MovieDto MovieRated { get; init; }
+        public MovieDto Movie { get; init; }
 
         /// <summary>
         /// User that gave the rate

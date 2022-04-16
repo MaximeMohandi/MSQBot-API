@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using MSQBot_API.Business.Services;
@@ -74,6 +75,9 @@ namespace MSQBot_API.Extensions
 
         public static void ConfigureAuthentication(this IServiceCollection services, IConfiguration configuration)
         {
+            //add identity system
+            services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<MSQBotDbContext>().AddDefaultTokenProviders();
+
             //add jwt settings
             var bindJwtSettings = new JwtConfiguration();
             configuration.Bind("JWT", bindJwtSettings);
@@ -98,6 +102,18 @@ namespace MSQBot_API.Extensions
                     RequireExpirationTime = bindJwtSettings.RequireExpirationTime,
                     ValidateLifetime = bindJwtSettings.RequireExpirationTime,
                     ClockSkew = TimeSpan.Zero,
+                };
+
+                options.Events = new JwtBearerEvents
+                {
+                    OnAuthenticationFailed = context =>
+                    {
+                        if (context.Exception.GetType() == typeof(SecurityTokenExpiredException))
+                        {
+                            context.Response.Headers.Add("IS-TOKEN-EXPIRED", "true");
+                        }
+                        return Task.CompletedTask;
+                    }
                 };
             });
         }

@@ -13,6 +13,15 @@ namespace MSQBot_API.Core.Entities
         [Column("name_user")]
         public string Name { get; set; }
 
+        [Column("role_user")]
+        public int Role { get; set; }
+
+        [Column("user_refresh_token")]
+        public string? RefreshToken { get; set; }
+
+        [Column("user_refresh_token_validity")]
+        public DateTime? RefreshTokenValidity { get; set; }
+
         public List<Rate> rates { get; set; }
     }
 }

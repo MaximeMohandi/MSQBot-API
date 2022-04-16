@@ -13,7 +13,9 @@ namespace MSQBot_API.Core.Helpers
     /// </summary>
     public static class JwtHelpers
     {
-        private static readonly DateTime _expirationTime = DateTime.Now.AddMinutes(60);
+        private static DateTime ExpirationDate => new DateTimeOffset(DateTime.Now.AddMinutes(2)).DateTime;
+
+        private static DateTime RefreshTokenExpirationDate => new DateTimeOffset(DateTime.Now.AddDays(1)).DateTime;
 
         public static IEnumerable<Claim> GetClaims(this UserTokenDto userToken, Guid tokenId)
         {
@@ -22,7 +24,7 @@ namespace MSQBot_API.Core.Helpers
                 new Claim("UserId", userToken.UserId.ToString()),
                 new Claim(ClaimTypes.Name, userToken.UserName),
                 new Claim(ClaimTypes.NameIdentifier, tokenId.ToString()),
-                new Claim(ClaimTypes.Expiration, _expirationTime.ToString("MMM ddd dd yyyy HH:mm:ss tt"))
+                new Claim(ClaimTypes.Expiration, ExpirationDate.ToString("MMM ddd dd yyyy HH:mm:ss tt"))
             };
         }
 
@@ -55,9 +57,9 @@ namespace MSQBot_API.Core.Helpers
                     UserId = model.UserId,
                     UserName = model.UserName,
                     Id = TokenId,
-                    ExpiredTime = new DateTimeOffset(_expirationTime).DateTime,
+                    ExpiredTime = ExpirationDate,
                     RefreshToken = GenerateRefreshToken(),
-                    RefreshTokenExpiredTime = new DateTimeOffset(_expirationTime).DateTime,
+                    RefreshTokenExpirationDate = RefreshTokenExpirationDate
 
                 };
             }
@@ -76,7 +78,7 @@ namespace MSQBot_API.Core.Helpers
                     audience: jwtConfiguration.ValidAudience,
                     claims,
                     notBefore: new DateTimeOffset(DateTime.Now.AddDays(-1)).DateTime, // reject token created yesterday
-                    expires: new DateTimeOffset(_expirationTime).DateTime,
+                    expires: ExpirationDate,
                     signingCredentials: new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256)
                 );
             return new JwtSecurityTokenHandler().WriteToken(JwtToken);
@@ -90,6 +92,29 @@ namespace MSQBot_API.Core.Helpers
                 rng.GetBytes(randomNumber);
                 return Convert.ToBase64String(randomNumber);
             }
+        }
+
+        public static bool IsValidExpiredAccessToken(string token, JwtConfiguration jwtConfiguration)
+        {
+            var tokenValidationParameters = new TokenValidationParameters
+            {
+                ValidateAudience = false,
+                ValidateIssuer = false,
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtConfiguration.IssuerSigningKey)),
+                ValidateLifetime = false
+            };
+
+            var tokenHandler = new JwtSecurityTokenHandler();
+            SecurityToken securityToken;
+            var principal = tokenHandler.ValidateToken(token, tokenValidationParameters, out securityToken);
+            var jwtSecurityToken = securityToken as JwtSecurityToken;
+            if (jwtSecurityToken == null || !jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256, StringComparison.InvariantCultureIgnoreCase))
+            {
+                return false;
+            }
+
+            return true;
         }
     }
 }

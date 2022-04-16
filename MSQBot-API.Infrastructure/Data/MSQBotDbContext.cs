@@ -1,5 +1,5 @@
-﻿using MSQBot_API.Core.Entities;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
+using MSQBot_API.Core.Entities;
 
 namespace MSQBot_API.Infrastructure
 {

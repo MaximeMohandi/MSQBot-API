@@ -158,7 +158,7 @@ namespace MSQBot_API.Core.Helpers
         /// <returns>mapped user DTO</returns>
         public static UserDto? MapToDTO(this User user)
         {
-            return new UserDto { UserId = user.UserId, UserName = user.Name };
+            return new UserDto { UserId = user.UserId, UserName = user.Name, UserRole = user.Role };
         }
 
         #endregion UserDTO mapper

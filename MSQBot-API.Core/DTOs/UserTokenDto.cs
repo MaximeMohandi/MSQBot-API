@@ -26,11 +26,6 @@
         public string UserName { get; init; } = string.Empty;
 
         /// <summary>
-        /// Token validity time
-        /// </summary>
-        public TimeSpan Validity { get; init; }
-
-        /// <summary>
         /// Token used to refresh auth
         /// </summary>
         public string RefreshToken { get; init; } = string.Empty;
@@ -43,6 +38,6 @@
         /// <summary>
         /// Refresh token expiration date
         /// </summary>
-        public DateTime RefreshTokenExpiredTime { get; init; }
+        public DateTime RefreshTokenExpirationDate { get; init; }
     }
 }

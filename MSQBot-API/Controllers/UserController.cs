@@ -1,7 +1,6 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using MSQBot_API.Core.DTOs;
+using MSQBot_API.Core.Exception;
 using MSQBot_API.Entities.DTOs;
 using MSQBot_API.Interfaces;
 
@@ -26,19 +25,43 @@ namespace MSQBot_API.Controllers
         }
 
         [HttpPost("authenticate")]
-        public ActionResult<UserTokenDto> AuthenticateUser([FromBody] UserDto user)
+        public async Task<ActionResult<UserTokenDto>> AuthenticateUser([FromBody] UserLoginDto user)
         {
             try
             {
-                return Ok(_userAuthenticationServices.Authenticate(user));
+                var authToken = await _userAuthenticationServices.Authenticate(user);
+                return Ok(authToken);
             }
             catch (ArgumentNullException ex)
             {
                 return BadRequest(ex.Message);
             }
-            catch (KeyNotFoundException ex)
+            catch (UserNotFoundException ex)
+            {
+                return Unauthorized(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                return StatusCode(500, ex.Message);
+            }
+        }
+
+        [HttpPost("refreshToken")]
+        public async Task<ActionResult<UserTokenDto>> RefreshTokenUser([FromBody] UserRefreshTokenDto refreshTokenUser)
+        {
+            try
+            {
+                var authToken = await _userAuthenticationServices.RefreshToken(refreshTokenUser);
+                return Ok(authToken);
+            }
+            catch (ArgumentNullException ex)
             {
                 return BadRequest(ex.Message);
+            }
+            catch (UserNotFoundException ex)
+            {
+                return Unauthorized(ex.Message);
             }
             catch (Exception ex)
             {

@@ -5,26 +5,25 @@ namespace MSQBot_API.Core.DTOs
     /// <summary>
     /// Data used to rate a movie
     /// </summary>
-    public class MovieRateCreationDto
+    public record MovieRateCreationDto
     {
-        private decimal _rate;
 
         /// <summary>
         /// Id of the movie rated
         /// </summary>
         [Required(ErrorMessage = "Id movie is required")]
-        public int MoviId { get; set; }
+        public int MoviId { get; init; }
 
         /// <summary>
         /// Id of the user who rate the movie
         /// </summary>
         [Required(ErrorMessage = "Id user is required")]
-        public long UserId { get; set; }
+        public long UserId { get; init; }
 
         /// <summary>
         /// Rate given by the user to the movie (rounded to two decimal)
         /// </summary>
         [Required(ErrorMessage = "Rate is required")]
-        public decimal Rate { get => _rate; set => _rate = Math.Round(value, 2); }
+        public decimal Rate { get; init; }
     }
 }

@@ -13,12 +13,12 @@ namespace MSQBot_API.Interfaces
         /// </summary>
         /// <param name="user">user to authenticate</param>
         /// <returns> Send an authorization token</returns>
-        public UserTokenDto Authenticate(UserDto user);
+        public Task<UserTokenDto> Authenticate(UserLoginDto user);
 
         /// <summary>
         /// Refresh a user token
         /// </summary>
         /// <returns>new user Token</returns>
-        public UserTokenDto RefreshToken(UserTokenDto userToken);
+        public Task<UserTokenDto> RefreshToken(UserRefreshTokenDto userToken);
     }
 }

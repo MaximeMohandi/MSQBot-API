@@ -1,6 +1,6 @@
 ﻿namespace MSQBot_API.Core.Entities
 {
-    public class JwtSettings
+    public class JwtConfiguration
     {
         /// <summary>
         /// Toggle validation of issuer that's signing the key

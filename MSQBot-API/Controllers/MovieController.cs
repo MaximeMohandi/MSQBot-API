@@ -4,34 +4,25 @@ using Microsoft.AspNetCore.Mvc;
 using MSQBot_API.Business.Services;
 using MSQBot_API.Core.DTOs;
 using MSQBot_API.Core.Exception;
-using MSQBot_API.Interfaces;
+using MSQBot_API.Messages;
 
 namespace MSQBot_API.Controllers
 {
     [Route("api/movies")]
     [ApiController]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class MovieController : ControllerBase
     {
-        /*Dependencies*/
         private readonly ILogger _logger;
-        private readonly IImageScrapperService _imageScrapper;
         private readonly MovieServices _movieServices;
         private readonly RateServices _rateServices;
 
-        /*Movies message codes*/
-        private const string ERR_MOVIE_INTERNAL_SERVER = "ERR_MOVIE_INTERNAL_SERVER";
-        private const string ERR_MOVIE_ARGS_NULL = "ERR_MOVIE_ARGS_NULL";
-        private const string ERR_MOVIE_INVALID_BODY = "ERR_MOVIE_INVALID_BODY";
-        private const string SUCCESS_MOVIE_ADDED = "SUCCESS_MOVIE_ADDED";
-        private const string SUCCESS_MOVIE_UPDATED = "SUCCESS_MOVIE_UPDATED";
 
-        public MovieController(ILogger<MovieController> logger, 
-            MovieServices movieServices, 
-            RateServices rateServices,
-            IImageScrapperService imageScrapper)
+        public MovieController(ILogger<MovieController> logger,
+            MovieServices movieServices,
+            RateServices rateServices)
         {
             _logger = logger;
-            _imageScrapper = imageScrapper;
             _movieServices = movieServices;
             _rateServices = rateServices;
         }
@@ -43,12 +34,12 @@ namespace MSQBot_API.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+
         public async Task<IActionResult> GetAsync()
         {
             try
             {
-                var movies = await _movieServices.GetMoviesView();
+                var movies = await _movieServices.GetGlobalView();
 
                 return Ok(movies);
             }
@@ -56,9 +47,9 @@ namespace MSQBot_API.Controllers
             {
                 return NotFound();
             }
-            catch(MovieException ex)
+            catch (MovieException ex)
             {
-                var erroMsg = $"{ERR_MOVIE_INTERNAL_SERVER}: {ex.Message}";
+                var erroMsg = $"{MovieMessages.ERR_MOVIE_INTERNAL_SERVER}: {ex.Message}";
                 _logger.LogError(erroMsg);
                 return StatusCode(500, erroMsg);
             }
@@ -74,7 +65,7 @@ namespace MSQBot_API.Controllers
         {
             try
             {
-                var movie = await _movieServices.GetMovie(id);
+                var movie = await _movieServices.Get(id);
 
                 return Ok(movie);
             }
@@ -84,7 +75,7 @@ namespace MSQBot_API.Controllers
             }
             catch (MovieException ex)
             {
-                var erroMsg = $"{ERR_MOVIE_INTERNAL_SERVER}: {ex.Message}";
+                var erroMsg = $"{MovieMessages.ERR_MOVIE_INTERNAL_SERVER}: {ex.Message}";
                 _logger.LogError(erroMsg);
                 return StatusCode(500, erroMsg);
             }
@@ -95,22 +86,38 @@ namespace MSQBot_API.Controllers
             }
         }
 
+        [AllowAnonymous]
+        [HttpGet("wallpaper/{movie}", Name = "getMovieWallpaper")]
+        public async Task<IActionResult> GetWallpaperMovie(string movie)
+        {
+            try
+            {
+                var wallpaper = await _movieServices.GetMovieWallpaper(movie);
+                return Ok(wallpaper);
+            }
+            catch (Exception)
+            {
+                return StatusCode(500);
+            }
+
+        }
+
         #endregion Getter
 
         #region Post
 
         [HttpPost("movie")]
-        public IActionResult AddMovie([FromBody] MovieCreationDto movie)
+        public async Task<IActionResult> AddMovie([FromBody] MovieCreationDto movie)
         {
             try
             {
-                if (movie is null) return BadRequest(ERR_MOVIE_ARGS_NULL);
+                if (movie is null) return BadRequest(MovieMessages.ERR_MOVIE_ARGS_NULL);
 
-                if (!ModelState.IsValid) return BadRequest(ERR_MOVIE_INVALID_BODY);
+                if (!ModelState.IsValid) return BadRequest(MovieMessages.ERR_MOVIE_INVALID_BODY);
 
-                _movieServices.AddMovie(movie);
+                await _movieServices.Add(movie);
 
-                return StatusCode(201, SUCCESS_MOVIE_ADDED);
+                return StatusCode(201, MovieMessages.SUCCESS_MOVIE_ADDED);
             }
             catch (Exception ex)
             {
@@ -124,17 +131,17 @@ namespace MSQBot_API.Controllers
         {
             try
             {
-                if (movieRated == null) return BadRequest(ERR_MOVIE_ARGS_NULL);
-                if (!ModelState.IsValid) return BadRequest(ERR_MOVIE_INVALID_BODY);
+                if (movieRated == null) return BadRequest(MovieMessages.ERR_MOVIE_ARGS_NULL);
+                if (!ModelState.IsValid) return BadRequest(MovieMessages.ERR_MOVIE_INVALID_BODY);
 
-                await _rateServices.RateMovie(_movieServices, movieRated);
+                await _rateServices.RateMovie(movieRated, _movieServices);
 
                 return Ok();
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex.Message);
-                return StatusCode(500, ERR_MOVIE_INTERNAL_SERVER);
+                return StatusCode(500, MovieMessages.ERR_MOVIE_INTERNAL_SERVER);
             }
         }
 
@@ -149,12 +156,12 @@ namespace MSQBot_API.Controllers
             {
                 await _movieServices.UpdateAllMoviePoster();
 
-                return StatusCode(202, SUCCESS_MOVIE_UPDATED);
+                return StatusCode(202, MovieMessages.SUCCESS_MOVIE_UPDATED);
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex.Message);
-                return StatusCode(500, ERR_MOVIE_INTERNAL_SERVER);
+                return StatusCode(500, MovieMessages.ERR_MOVIE_INTERNAL_SERVER);
             }
         }
 
@@ -163,17 +170,17 @@ namespace MSQBot_API.Controllers
         {
             try
             {
-                if (newNameMovie == null) return BadRequest(ERR_MOVIE_ARGS_NULL);
-                if (!ModelState.IsValid) return BadRequest(ERR_MOVIE_INVALID_BODY);
+                if (newNameMovie == null) return BadRequest(MovieMessages.ERR_MOVIE_ARGS_NULL);
+                if (!ModelState.IsValid) return BadRequest(MovieMessages.ERR_MOVIE_INVALID_BODY);
 
-                await _movieServices.UpdateMovieName(newNameMovie);
+                await _movieServices.UpdateName(newNameMovie);
 
-                return StatusCode(202, SUCCESS_MOVIE_UPDATED);
+                return StatusCode(202, MovieMessages.SUCCESS_MOVIE_UPDATED);
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex.Message);
-                return StatusCode(500, ERR_MOVIE_INTERNAL_SERVER);
+                return StatusCode(500, MovieMessages.ERR_MOVIE_INTERNAL_SERVER);
             }
         }
 

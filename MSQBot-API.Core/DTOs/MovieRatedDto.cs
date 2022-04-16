@@ -3,42 +3,26 @@
 namespace MSQBot_API.Core.DTOs
 {
     /// <summary>
-    /// Front representation of a movie
+    /// Front representation of a movie with it's rate
     /// </summary>
-    public class MovieRatedDto : MovieDto
+    public record MovieRatedDto : IMovie
     {
-        /// <summary>
-        /// All rates given to the movie
-        /// </summary>
+        public int MovieId { get; init; }
+
+        public string Title { get; init; } = string.Empty;
+
+        public string Poster { get; init; } = string.Empty;
+
+        public DateTime AddedDate { get; init; }
+
+        public DateTime? SeenDate { get; init; }
+
         public List<RatesMovieDto>? Rates { get; set; }
 
-        /// <summary>
-        /// Average rate of the movie
-        /// </summary>
-        public decimal? AvgRate
-        {
-            get => IsRatesExist() ? Math.Round(Rates.Average(r => r.Rate).Value, 2) : default(decimal?);
-        }
+        public decimal? AvgRate { get; init; }
 
-        /// <summary>
-        /// Best Rate given to the movie
-        /// </summary>
-        public decimal? MaxRate
-        {
-            get => IsRatesExist() ? Rates.Max(r => r.Rate) : default(decimal?);
-        }
+        public decimal? MaxRate { get; init; }
 
-        /// <summary>
-        /// Worst rate given to the movie
-        /// </summary>
-        public decimal? MinRate
-        {
-            get => IsRatesExist() ? Rates.Min(r => r.Rate) : default(decimal?);
-        }
-
-        private bool IsRatesExist()
-        {
-            return Rates is not null && Rates.Count > 0;
-        }
+        public decimal? MinRate { get; init; }
     }
 }

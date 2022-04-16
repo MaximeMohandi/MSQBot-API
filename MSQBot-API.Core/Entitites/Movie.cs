@@ -14,7 +14,7 @@ namespace MSQBot_API.Core.Entities
         public string Title { get; set; } = string.Empty;
 
         [Column("movie_poster")]
-        public string Poster { get; set; } = string.Empty;
+        public string? Poster { get; set; } = string.Empty;
 
         [Column("date_added_movie")]
         public DateTime AddedDate { get; set; }

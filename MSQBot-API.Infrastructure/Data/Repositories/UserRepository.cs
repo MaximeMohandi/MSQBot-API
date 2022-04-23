@@ -11,9 +11,15 @@ namespace MSQBot_API.Infrastructure.Data.Repositories
         {
         }
 
-        public bool IsUserExist(User user)
+        /// <summary>
+        /// Check if user exist 
+        /// </summary>
+        /// <param name="id">user id</param>
+        /// <param name="name">user name</param>
+        /// <returns>True if user exist, false otherwise</returns>
+        public bool IsUserExist(long id, string name)
         {
-            return _dbContext.Users.Any(u => u.UserId == user.UserId && u.Name == user.Name);
+            return _dbContext.Users.Any(u => u.UserId == id && u.Name == name);
         }
 
         /// <summary>

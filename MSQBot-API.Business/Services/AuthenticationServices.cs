@@ -50,6 +50,10 @@ namespace MSQBot_API.Business.Services
                 {
                     return await GenerateNewToken(user);
                 }
+                else
+                {
+                    throw new Exception("Token is not valid ");
+                }
             }
             throw new UserNotFoundException($"user {authenticatedUser.UserName} not found");
         }
@@ -61,7 +65,7 @@ namespace MSQBot_API.Business.Services
             var userToken = JwtHelpers.GetTokenKey(new UserTokenDto
             {
                 Id = Guid.NewGuid(),
-                UserId = existingUser.UserId,
+                UserId = existingUser.UserId.ToString(),
                 UserName = existingUser.Name,
             }, _jwtSettings);
 
@@ -79,7 +83,7 @@ namespace MSQBot_API.Business.Services
         /// <returns>True if user exist, false otherwise.</returns>
         private bool IsUserExist(IUser user)
         {
-            return _userRepository.IsUserExist(new User { Name = user.UserName, UserId = user.UserId });
+            return _userRepository.IsUserExist(user.UserId, user.UserName);
         }
 
         /// <summary>

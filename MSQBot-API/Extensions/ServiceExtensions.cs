@@ -25,6 +25,7 @@ namespace MSQBot_API.Extensions
             {
                 options.AddPolicy("CorsPolicy",
                     builder => builder
+                    .WithExposedHeaders("IS-TOKEN-EXPIRED")
                     .AllowAnyOrigin()
                     .AllowAnyHeader()
                     .AllowAnyMethod());

@@ -5,7 +5,7 @@ namespace MSQBot_API.Core.Repositories
 {
     public interface IUserRepository : IRepository<User>
     {
-        bool IsUserExist(User user);
+        bool IsUserExist(long id, string name);
         Task<User> Get(long userId);
     }
 }

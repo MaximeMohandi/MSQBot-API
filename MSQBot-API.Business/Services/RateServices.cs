@@ -1,9 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
-using MSQBot_API.Core.DTOs;
+﻿using MSQBot_API.Core.DTOs;
 using MSQBot_API.Core.Entities;
-using MSQBot_API.Core.Repositories;
 using MSQBot_API.Core.Helpers;
 using MSQBot_API.Core.Interfaces;
+using MSQBot_API.Core.Repositories;
 
 namespace MSQBot_API.Business.Services
 {
@@ -27,13 +26,27 @@ namespace MSQBot_API.Business.Services
 
         public async Task RateMovie(MovieRateCreationDto movieRated, IMovieServices movieServices)
         {
-            await _repository.Add(new Rate
+            var userRates = await _repository.GetRatesUser(movieRated.UserId);
+            var existingRate = userRates.FirstOrDefault(r => r.MovieId == movieRated.MovieId);
+
+
+            if (existingRate is not null)
             {
-                MovieId = movieRated.MoviId,
-                UserId = movieRated.UserId,
-                Note = movieRated.Rate
-            });
-            await movieServices.UpdateSeenDate(movieRated.MoviId);
+                existingRate.Note = movieRated.Rate;
+                await _repository.Update(existingRate);
+            }
+            else
+            {
+                await _repository.Add(new Rate
+                {
+                    MovieId = movieRated.MovieId,
+                    UserId = movieRated.UserId,
+                    Note = movieRated.Rate
+                });
+            }
+
+            await movieServices.UpdateSeenDate(movieRated.MovieId);
+
         }
 
     }

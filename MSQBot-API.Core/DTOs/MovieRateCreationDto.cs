@@ -12,7 +12,7 @@ namespace MSQBot_API.Core.DTOs
         /// Id of the movie rated
         /// </summary>
         [Required(ErrorMessage = "Id movie is required")]
-        public int MoviId { get; init; }
+        public int MovieId { get; init; }
 
         /// <summary>
         /// Id of the user who rate the movie

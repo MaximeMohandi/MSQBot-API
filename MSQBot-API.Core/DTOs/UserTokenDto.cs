@@ -18,7 +18,8 @@
         /// <summary>
         /// Logged user id
         /// </summary>
-        public long UserId { get; init; }
+        /// <remarks>user id to string to avoid json rounding</remarks>
+        public string UserId { get; init; }
 
         /// <summary>
         /// logged user name

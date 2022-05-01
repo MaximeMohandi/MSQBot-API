@@ -126,7 +126,7 @@ namespace MSQBot_API.Core.Helpers
         /// <summary>
         /// Map a Rate entitie to a rate DTO
         /// </summary>
-        /// <param name="rate">rate entitie to map</param>
+        /// <param name="rate">rate entity to map</param>
         /// <returns>mapped rate DTO</returns>
         public static RatesMovieDto? MapToDTO(this Rate? rate)
         {
@@ -154,11 +154,39 @@ namespace MSQBot_API.Core.Helpers
         /// <summary>
         /// Map a User entitie to a user DTO
         /// </summary>
-        /// <param name="user">user entitie to map</param>
+        /// <param name="user">user entity to map</param>
         /// <returns>mapped user DTO</returns>
         public static UserDto? MapToDTO(this User user)
         {
             return new UserDto { UserId = user.UserId, UserName = user.Name, UserRole = user.Role };
+        }
+
+        /// <summary>
+        /// Map a user entity to a existing user login DTO
+        /// </summary>
+        /// <param name="user">user entity to map</param>
+        /// <returns>mapper user DTO</returns>
+        public static ExistingUserLoginDto? MapToExistingLoginDto(this User user)
+        {
+            return new ExistingUserLoginDto
+            {
+                UserId = user.UserId,
+                UserName = user.Name,
+                RefreshToken = user.RefreshToken,
+                RefreshTokenValidity = user.RefreshTokenValidity
+            };
+        }
+
+        public static User MapToEntity(this ExistingUserLoginDto user)
+        {
+            return new User
+            {
+                UserId = user.UserId,
+                Name = user.UserName,
+                RefreshToken = user.RefreshToken,
+                RefreshTokenValidity = user.RefreshTokenValidity,
+                rates = null
+            };
         }
 
         #endregion UserDTO mapper

@@ -13,7 +13,7 @@ namespace MSQBot_API.Core.Helpers
     /// </summary>
     public static class JwtHelpers
     {
-        private static DateTime ExpirationDate => new DateTimeOffset(DateTime.Now.AddMinutes(2)).DateTime;
+        private static DateTime ExpirationDate => new DateTimeOffset(DateTime.Now.AddHours(2)).DateTime;
 
         private static DateTime RefreshTokenExpirationDate => new DateTimeOffset(DateTime.Now.AddDays(1)).DateTime;
 

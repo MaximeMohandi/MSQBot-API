@@ -15,7 +15,7 @@ namespace MSQBot_API.Business.Services
         private readonly IMovieRepository _repository;
         private readonly IImageScrapperService _imageScrapper;
 
-        private readonly string POSTER_SEARCH = " movie poster";
+        private readonly string POSTER_SEARCH = " movie poster 2160p";
         private readonly string WALLPAPER_SEARCH = " movie wallpaper 2160p";
 
         public MovieServices(IMovieRepository repository, IImageScrapperService imageScrapper)

@@ -51,5 +51,8 @@
 	<PropertyGroup>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
 		<NoWarn>$(NoWarn);1591</NoWarn>
+		<RepositoryUrl>https://github.com/MaximeMohandi/MSQBot-API.git</RepositoryUrl>
+		<PackageReleaseNotes>first beta of the api</PackageReleaseNotes>
+		<Version>1.0.0-beta1</Version>
 	</PropertyGroup>
 </Project>

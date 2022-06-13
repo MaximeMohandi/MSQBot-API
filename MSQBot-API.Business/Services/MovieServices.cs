@@ -52,6 +52,18 @@ namespace MSQBot_API.Business.Services
         }
 
         /// <summary>
+        /// Fetch a random movie in unseen list
+        /// </summary>
+        /// <returns></returns>
+        public async Task<IMovie> GetRandomNotSeenMovie()
+        {
+            Random random = new Random();
+            var movies = await GetAll();
+            var notSennMovies = movies.Where(m => m.SeenDate == null);
+            return notSennMovies.ElementAt(random.Next(0, notSennMovies.Count()));
+        }
+
+        /// <summary>
         /// Add a new movie in database
         /// </summary>
         /// <param name="movie">the new movie to insert</param>

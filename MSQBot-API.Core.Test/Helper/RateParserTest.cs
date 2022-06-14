@@ -1,5 +1,5 @@
 ﻿using MSQBot_API.Core.Extension;
-using MSQBot_API.Core.Interfaces;
+using MSQBot_API.Core.Interfaces.Movies;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;

@@ -17,6 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\MSQBot-API.Business\MSQBot-API.Business.csproj" />
     <ProjectReference Include="..\MSQBot-API.Core\MSQBot-API.Core.csproj" />
   </ItemGroup>
 

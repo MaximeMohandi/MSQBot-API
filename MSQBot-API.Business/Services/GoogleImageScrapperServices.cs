@@ -1,6 +1,6 @@
 ﻿using HtmlAgilityPack;
-using MSQBot_API.Core.Helpers;
-using MSQBot_API.Interfaces;
+using MSQBot_API.Business.Helpers;
+using MSQBot_API.Business.Interfaces.Movies;
 
 namespace MSQBot_API.Business.Services.ImageScrapper
 {

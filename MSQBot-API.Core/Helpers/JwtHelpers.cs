@@ -1,6 +1,6 @@
 ﻿using Microsoft.IdentityModel.Tokens;
+using MSQBot_API.Core.DTOs.Users;
 using MSQBot_API.Core.Entities;
-using MSQBot_API.Entities.DTOs;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;

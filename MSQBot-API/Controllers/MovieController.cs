@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using MSQBot_API.Business.Services;
-using MSQBot_API.Core.DTOs;
+using MSQBot_API.Business.Interfaces.Movies;
+using MSQBot_API.Core.DTOs.Movies;
 using MSQBot_API.Core.Exception;
 using MSQBot_API.Messages;
 
@@ -14,13 +14,13 @@ namespace MSQBot_API.Controllers
     public class MovieController : ControllerBase
     {
         private readonly ILogger _logger;
-        private readonly MovieServices _movieServices;
-        private readonly RateServices _rateServices;
+        private readonly IMovieServices _movieServices;
+        private readonly IRateServices _rateServices;
 
 
         public MovieController(ILogger<MovieController> logger,
-            MovieServices movieServices,
-            RateServices rateServices)
+            IMovieServices movieServices,
+            IRateServices rateServices)
         {
             _logger = logger;
             _movieServices = movieServices;

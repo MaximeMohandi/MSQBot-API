@@ -1,9 +1,8 @@
-﻿using MSQBot_API.Core.DTOs;
-using MSQBot_API.Core.Entities;
+﻿using MSQBot_API.Business.Interfaces.Movies;
+using MSQBot_API.Core.DTOs.Movies;
+using MSQBot_API.Core.Entitites.Movies;
 using MSQBot_API.Core.Helpers;
-using MSQBot_API.Core.Interfaces;
 using MSQBot_API.Core.Repositories;
-using MSQBot_API.Interfaces;
 
 namespace MSQBot_API.Business.Services
 {

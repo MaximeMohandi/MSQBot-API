@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using MSQBot_API.Core.Entities;
+using MSQBot_API.Core.Entitites.Movies;
+using MSQBot_API.Core.Entitites.Users;
 
 namespace MSQBot_API.Infrastructure
 {

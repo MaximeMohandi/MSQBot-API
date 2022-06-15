@@ -1,4 +1,11 @@
-﻿namespace MSQBot_API.Business.Services
+﻿using MSQBot_API.Business.Interfaces.Movies;
+using MSQBot_API.Core.DTOs.Movies;
+using MSQBot_API.Core.Entitites.Movies;
+using MSQBot_API.Core.Helpers;
+using MSQBot_API.Core.Interfaces.Movies;
+using MSQBot_API.Core.Repositories;
+
+namespace MSQBot_API.Business.Services
 {
     /// <summary>
     /// Services to manage movies data.

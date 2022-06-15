@@ -1,7 +1,5 @@
-﻿using MSQBot_API.Core.DTOs.Meters;
-using MSQBot_API.Core.DTOs.Movies;
+﻿using MSQBot_API.Core.DTOs.Movies;
 using MSQBot_API.Core.DTOs.Users;
-using MSQBot_API.Core.Entitites.Meters;
 using MSQBot_API.Core.Entitites.Movies;
 using MSQBot_API.Core.Entitites.Users;
 using MSQBot_API.Core.Extension;
@@ -193,20 +191,5 @@ namespace MSQBot_API.Core.Helpers
         }
 
         #endregion UserDTO mapper
-
-        #region MeterDTO mapper
-        public static List<MeterDto>? MapToDTOs(this Meter? meter)
-        {
-            if (meter == null) return null;
-
-            return new MeterDto
-            {
-                MeterId = meter.MeterId,
-                Rules = meter.Rules,
-                Name = meter.Name,
-
-            }
-        }
-        #endregion
     }
 }

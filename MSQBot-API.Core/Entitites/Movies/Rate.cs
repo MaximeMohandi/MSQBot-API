@@ -1,6 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using MSQBot_API.Core.Entitites.Users;
+using System.ComponentModel.DataAnnotations.Schema;
 
-namespace MSQBot_API.Core.Entities
+namespace MSQBot_API.Core.Entitites.Movies
 {
     [Table("rates")]
     public class Rate

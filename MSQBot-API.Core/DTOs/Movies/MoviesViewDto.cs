@@ -1,4 +1,4 @@
-﻿namespace MSQBot_API.Core.DTOs
+﻿namespace MSQBot_API.Core.DTOs.Movies
 {
     /// <summary>
     /// Get all movies with key data and last activities

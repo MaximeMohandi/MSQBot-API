@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace MSQBot_API.Core.Interfaces
+﻿namespace MSQBot_API.Core.Interfaces.Movies
 {
     public interface IMovie
     {
@@ -16,21 +10,21 @@ namespace MSQBot_API.Core.Interfaces
         /// <summary>
         /// movie title
         /// </summary>
-        public string Title { get; init; }
+        public string Title { get; set; }
 
         /// <summary>
         /// Movie poster
         /// </summary>
-        public string Poster { get; init; }
+        public string Poster { get; set; }
 
         /// <summary>
         /// The date when the movie has been added
         /// </summary>
-        public DateTime AddedDate { get; init; }
+        public DateTime AddedDate { get; set; }
 
         /// <summary>
         /// Date when the movie has been seen
         /// </summary>
-        public DateTime? SeenDate { get; init; }
+        public DateTime? SeenDate { get; set; }
     }
 }

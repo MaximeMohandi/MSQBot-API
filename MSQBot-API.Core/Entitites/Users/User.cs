@@ -1,7 +1,8 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using MSQBot_API.Core.Entitites.Movies;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace MSQBot_API.Core.Entities
+namespace MSQBot_API.Core.Entitites.Users
 {
     [Table("users")]
     public class User

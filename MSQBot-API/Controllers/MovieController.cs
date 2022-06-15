@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using MSQBot_API.Business.Services;
-using MSQBot_API.Core.DTOs;
+using MSQBot_API.Business.Interfaces.Movies;
+using MSQBot_API.Core.DTOs.Movies;
 using MSQBot_API.Core.Exception;
 using MSQBot_API.Messages;
 
@@ -14,13 +14,13 @@ namespace MSQBot_API.Controllers
     public class MovieController : ControllerBase
     {
         private readonly ILogger _logger;
-        private readonly MovieServices _movieServices;
-        private readonly RateServices _rateServices;
+        private readonly IMovieServices _movieServices;
+        private readonly IRateServices _rateServices;
 
 
         public MovieController(ILogger<MovieController> logger,
-            MovieServices movieServices,
-            RateServices rateServices)
+            IMovieServices movieServices,
+            IRateServices rateServices)
         {
             _logger = logger;
             _movieServices = movieServices;
@@ -60,7 +60,7 @@ namespace MSQBot_API.Controllers
             }
         }
 
-        [HttpGet("{id:int}", Name = "getMovie")]
+        [HttpGet("{id:int}", Name = "Get Movie")]
         public async Task<IActionResult> GetAsync(int id)
         {
             try
@@ -100,6 +100,32 @@ namespace MSQBot_API.Controllers
                 return StatusCode(500);
             }
 
+        }
+
+        [HttpGet("random", Name = "Get Random Movie")]
+        public async Task<IActionResult> GetRandom()
+        {
+            try
+            {
+                var movie = await _movieServices.GetRandomMovie();
+
+                return Ok(movie);
+            }
+            catch (NoMovieFoundException)
+            {
+                return NotFound();
+            }
+            catch (MovieException ex)
+            {
+                var erroMsg = $"{MovieMessages.ERR_MOVIE_INTERNAL_SERVER}: {ex.Message}";
+                _logger.LogError(erroMsg);
+                return StatusCode(500, erroMsg);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                return StatusCode(500);
+            }
         }
 
         #endregion Getter

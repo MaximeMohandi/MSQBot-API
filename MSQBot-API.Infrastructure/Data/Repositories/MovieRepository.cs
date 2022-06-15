@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using MSQBot_API.Core.Entities;
+using MSQBot_API.Core.Entitites.Movies;
 using MSQBot_API.Core.Exception;
 using MSQBot_API.Core.Repositories;
 using MSQBot_API.Infrastructure.Data.Repositories.Base;

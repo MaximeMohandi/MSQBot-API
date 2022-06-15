@@ -1,4 +1,4 @@
-﻿using MSQBot_API.Core.Helpers;
+﻿using MSQBot_API.Business.Helpers;
 using NUnit.Framework;
 
 namespace MSQBot_API.Core.Test.Helper

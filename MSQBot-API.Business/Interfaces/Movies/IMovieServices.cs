@@ -1,7 +1,7 @@
-﻿using MSQBot_API.Core.DTOs;
-using MSQBot_API.Core.Entities;
+﻿using MSQBot_API.Core.DTOs.Movies;
+using MSQBot_API.Core.Interfaces.Movies;
 
-namespace MSQBot_API.Core.Interfaces
+namespace MSQBot_API.Business.Interfaces.Movies
 {
     public interface IMovieServices : IBusinessServices<MovieRatedDto, MovieCreationDto>
     {
@@ -22,5 +22,22 @@ namespace MSQBot_API.Core.Interfaces
         /// </summary>
         /// <param name="newMovieTitle">DTO representing the change</param>
         Task UpdateName(MovieTitleUpdateDto newMovieTitle);
+
+        /// <summary>
+        /// Get a wallpaper of the movie
+        /// </summary>
+        /// <param name="movie">movie title</param>
+        /// <returns>link to a wallpaper image</returns>
+        Task<string> GetMovieWallpaper(string title);
+
+        /// <summary>
+        /// Change the poster for all the movies in database
+        /// </summary>
+        Task UpdateAllMoviePoster();
+
+        /// <summary>
+        /// Get a random movie to watch
+        /// </summary>
+        Task<IMovie> GetRandomMovie();
     }
 }

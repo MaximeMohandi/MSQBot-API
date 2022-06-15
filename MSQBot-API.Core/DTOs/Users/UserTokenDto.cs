@@ -1,4 +1,4 @@
-﻿namespace MSQBot_API.Entities.DTOs
+﻿namespace MSQBot_API.Core.DTOs.Users
 {
     /// <summary>
     /// Token given to authenticated user

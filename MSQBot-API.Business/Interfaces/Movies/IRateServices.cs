@@ -1,6 +1,6 @@
-﻿using MSQBot_API.Core.DTOs;
+﻿using MSQBot_API.Core.DTOs.Movies;
 
-namespace MSQBot_API.Core.Interfaces
+namespace MSQBot_API.Business.Interfaces.Movies
 {
     /// <summary>
     /// Rate services methods

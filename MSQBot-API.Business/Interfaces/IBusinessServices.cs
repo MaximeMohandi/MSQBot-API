@@ -1,12 +1,12 @@
-﻿namespace MSQBot_API.Core.Interfaces
+﻿namespace MSQBot_API.Business.Interfaces
 {
     /// <summary>
     /// Business services contract
     /// </summary>
     /// <typeparam name="TReturn">Return type of the service</typeparam>
     /// <typeparam name="TCreation">Type od the entity to create entity</typeparam>
-    public interface IBusinessServices<TReturn, TCreation> 
-        where TReturn : class 
+    public interface IBusinessServices<TReturn, TCreation>
+        where TReturn : class
         where TCreation : class
     {
         /// <summary>

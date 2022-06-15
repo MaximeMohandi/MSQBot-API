@@ -1,7 +1,6 @@
-﻿using MSQBot_API.Core.DTOs;
-using MSQBot_API.Entities.DTOs;
+﻿using MSQBot_API.Core.DTOs.Users;
 
-namespace MSQBot_API.Interfaces
+namespace MSQBot_API.Business.Interfaces.User
 {
     /// <summary>
     /// Base method to implemente to authenticate a user from a services.

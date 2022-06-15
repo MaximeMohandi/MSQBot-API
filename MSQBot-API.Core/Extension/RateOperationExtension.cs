@@ -1,4 +1,4 @@
-﻿using MSQBot_API.Core.Interfaces;
+﻿using MSQBot_API.Core.Interfaces.Movies;
 
 namespace MSQBot_API.Core.Extension
 {

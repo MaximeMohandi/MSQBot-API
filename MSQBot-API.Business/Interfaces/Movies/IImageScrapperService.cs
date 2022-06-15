@@ -1,4 +1,4 @@
-﻿namespace MSQBot_API.Interfaces
+﻿namespace MSQBot_API.Business.Interfaces.Movies
 {
     public interface IImageScrapperService
     {

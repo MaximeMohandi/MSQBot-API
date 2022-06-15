@@ -1,14 +1,15 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using MSQBot_API.Core.Interfaces.Movies;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace MSQBot_API.Core.Entities
+namespace MSQBot_API.Core.Entitites.Movies
 {
     [Table("movies")]
-    public class Movie
+    public class Movie : IMovie
     {
         [Key]
         [Column("id_movie")]
-        public int MovieId { get; set; }
+        public int MovieId { get; init; }
 
         [Column("name_movie")]
         public string Title { get; set; } = string.Empty;

@@ -1,4 +1,4 @@
-﻿namespace MSQBot_API.Core.Interfaces
+﻿namespace MSQBot_API.Core.Interfaces.Users
 {
     public interface IUser
     {

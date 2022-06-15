@@ -1,6 +1,7 @@
-﻿
-using MSQBot_API.Core.DTOs;
-using MSQBot_API.Core.Entities;
+﻿using MSQBot_API.Core.DTOs.Movies;
+using MSQBot_API.Core.DTOs.Users;
+using MSQBot_API.Core.Entitites.Movies;
+using MSQBot_API.Core.Entitites.Users;
 using MSQBot_API.Core.Extension;
 
 namespace MSQBot_API.Core.Helpers

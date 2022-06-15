@@ -1,4 +1,4 @@
-﻿namespace MSQBot_API.Core.DTOs
+﻿namespace MSQBot_API.Core.DTOs.Users
 {
     public record UserRefreshTokenDto : UserLoginDto
     {

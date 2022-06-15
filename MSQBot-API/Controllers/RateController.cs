@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using MSQBot_API.Entities.DTOs;
-using MSQBot_API.Business.Services;
+using MSQBot_API.Business.Interfaces.Movies;
 
 namespace MSQBot_API.Controllers
 {
@@ -10,20 +9,20 @@ namespace MSQBot_API.Controllers
     {
         /*Dependencies*/
         private readonly ILogger _logger;
-        private readonly RateServices _rateServices;
+        private readonly IRateServices _rateServices;
 
-        public RateController(ILogger<RateController> logger, RateServices rateServices)
+        public RateController(ILogger<RateController> logger, IRateServices rateServices)
         {
             _logger = logger;
             _rateServices = rateServices;
         }
 
         [HttpGet("{userId:long}", Name = "user")]
-        public IActionResult Get(long userId)
+        public async Task<IActionResult> Get(long userId)
         {
             try
             {
-                var rates = _rateServices.GetRatesUser(userId);
+                var rates = await _rateServices.GetRatesUser(userId);
 
                 if (rates == null) return NotFound();
 

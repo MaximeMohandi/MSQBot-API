@@ -1,8 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using MSQBot_API.Core.DTOs;
+using MSQBot_API.Business.Interfaces.User;
+using MSQBot_API.Core.DTOs.Users;
 using MSQBot_API.Core.Exception;
-using MSQBot_API.Entities.DTOs;
-using MSQBot_API.Interfaces;
 
 namespace MSQBot_API.Controllers
 {

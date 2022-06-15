@@ -2,13 +2,14 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using MSQBot_API.Business.Interfaces.Movies;
+using MSQBot_API.Business.Interfaces.User;
 using MSQBot_API.Business.Services;
 using MSQBot_API.Business.Services.ImageScrapper;
 using MSQBot_API.Core.Entities;
 using MSQBot_API.Core.Repositories;
 using MSQBot_API.Infrastructure;
 using MSQBot_API.Infrastructure.Data.Repositories;
-using MSQBot_API.Interfaces;
 
 namespace MSQBot_API.Extensions
 {
@@ -63,8 +64,8 @@ namespace MSQBot_API.Extensions
         public static void ConfigureBusinessServices(this IServiceCollection services)
         {
             //services
-            services.AddScoped<MovieServices, MovieServices>();
-            services.AddScoped<RateServices, RateServices>();
+            services.AddScoped<IMovieServices, MovieServices>();
+            services.AddScoped<IRateServices, RateServices>();
             services.AddScoped<IUserAuthenticationServices, AuthenticationServices>();
             services.AddScoped<IImageScrapperService, GoogleImageScrapperServices>();
 

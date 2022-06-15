@@ -1,11 +1,11 @@
-﻿using MSQBot_API.Core.DTOs;
+﻿using MSQBot_API.Business.Interfaces.User;
+using MSQBot_API.Core.DTOs.Users;
 using MSQBot_API.Core.Entities;
+using MSQBot_API.Core.Entitites.Users;
 using MSQBot_API.Core.Exception;
 using MSQBot_API.Core.Helpers;
-using MSQBot_API.Core.Interfaces;
+using MSQBot_API.Core.Interfaces.Users;
 using MSQBot_API.Core.Repositories;
-using MSQBot_API.Entities.DTOs;
-using MSQBot_API.Interfaces;
 
 namespace MSQBot_API.Business.Services
 {

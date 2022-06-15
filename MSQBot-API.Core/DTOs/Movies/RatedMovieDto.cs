@@ -1,11 +1,12 @@
-﻿using MSQBot_API.Core.Interfaces;
+﻿using MSQBot_API.Core.DTOs.Users;
+using MSQBot_API.Core.Interfaces.Movies;
 
-namespace MSQBot_API.Core.DTOs
+namespace MSQBot_API.Core.DTOs.Movies
 {
     /// <summary>
     /// All the movie rates
     /// </summary>
-    public record RatesMovieDto: IRate
+    public record RatesMovieDto : IRate
     {
 
         /// <summary>

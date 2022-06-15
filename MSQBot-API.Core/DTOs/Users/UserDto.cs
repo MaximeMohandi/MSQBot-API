@@ -1,8 +1,8 @@
 ﻿using MSQBot_API.Core.Enums;
-using MSQBot_API.Core.Interfaces;
+using MSQBot_API.Core.Interfaces.Users;
 using System.ComponentModel.DataAnnotations;
 
-namespace MSQBot_API.Core.DTOs
+namespace MSQBot_API.Core.DTOs.Users
 {
     public record UserDto : IUser
     {

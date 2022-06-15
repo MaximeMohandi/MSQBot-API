@@ -1,11 +1,10 @@
-﻿using MSQBot_API.Business.Services;
-using MSQBot_API.Core.Interfaces;
+﻿using MSQBot_API.Business.Interfaces.Movies;
+using MSQBot_API.Business.Services;
+using MSQBot_API.Core.DTOs.Movies;
 using MSQBot_API.Core.Repositories;
-using MSQBot_API.Interfaces;
+using NSubstitute;
 using NUnit.Framework;
 using System;
-using NSubstitute;
-using MSQBot_API.Core.DTOs;
 
 namespace MSQBot_API.Business.Test
 {

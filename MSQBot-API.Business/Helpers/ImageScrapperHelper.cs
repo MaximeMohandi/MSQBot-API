@@ -1,6 +1,6 @@
 ﻿using MSQBot_API.Core.Enums;
 
-namespace MSQBot_API.Core.Helpers
+namespace MSQBot_API.Business.Helpers
 {
     public static class ImageScrapperHelper
     {
@@ -12,7 +12,7 @@ namespace MSQBot_API.Core.Helpers
         /// <returns>The link with the correct image extension</returns>
         public static string ExtractImageUri(string imageUri)
         {
-            if (imageUri == string.Empty || UriContainsImage(imageUri) is false) 
+            if (imageUri == string.Empty || UriContainsImage(imageUri) is false)
             {
                 return string.Empty;
             }

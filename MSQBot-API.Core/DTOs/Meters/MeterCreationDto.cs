@@ -8,6 +8,8 @@ namespace MSQBot_API.Core.DTOs.Meters
         [Required(ErrorMessage = "Title is required")]
         [MaxLength(50, ErrorMessage = "Max length is 50")]
         public string Name { get; set; } = string.Empty;
-        public List<IUser>? Users { get; set; }
+
+        public string? Rules { get; set; }
+        public List<IUser>? Players { get; set; }
     }
 }

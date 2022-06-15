@@ -12,6 +12,8 @@ namespace MSQBot_API.Business.Interfaces.Meters
 
         Task AddPlayerToMeter(IUser newPlayer);
 
+        Task AddPlayersToMeter(IEnumerable<IUser> newPlayers);
+
         Task RemovePlayerFromMeter(IUser toRemovePlayer);
 
     }

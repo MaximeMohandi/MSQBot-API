@@ -2,6 +2,7 @@
 using MSQBot_API.Core.DTOs.Movies;
 using MSQBot_API.Core.Entitites.Movies;
 using MSQBot_API.Core.Helpers;
+using MSQBot_API.Core.Interfaces.Movies;
 using MSQBot_API.Core.Repositories;
 
 namespace MSQBot_API.Business.Services
@@ -29,31 +30,18 @@ namespace MSQBot_API.Business.Services
             return movies.MapToViewDto();
         }
 
-        /// <summary>
-        /// Fetch details on a movie
-        /// </summary>
-        /// <param name="movieId">id movie to fetch</param>
-        /// <returns>A movie with all it's rates</returns>
         public async Task<MovieRatedDto> Get(int id)
         {
             Movie movie = await _repository.Get(id);
             return movie.MapToDTO();
         }
 
-        /// <summary>
-        /// Fetch all movies
-        /// </summary>
-        /// <returns></returns>
         public async Task<List<MovieRatedDto>> GetAll()
         {
             var movies = await _repository.GetAll();
             return movies.MapToDTO();
         }
 
-        /// <summary>
-        /// Add a new movie in database
-        /// </summary>
-        /// <param name="movie">the new movie to insert</param>
         public async Task Add(MovieCreationDto movie)
         {
             await _repository.Add(new Movie
@@ -64,9 +52,6 @@ namespace MSQBot_API.Business.Services
             });
         }
 
-        /// <summary>
-        /// Add a poster to all movie that doesn't have one yet
-        /// </summary>
         public async Task UpdateAllMoviePoster()
         {
             var movies = await _repository.GetAll();
@@ -77,10 +62,6 @@ namespace MSQBot_API.Business.Services
             }
         }
 
-        /// <summary>
-        /// Update seen date of movie if it's not already set.
-        /// </summary>
-        /// <param name="movie">movie to update</param>
         public async Task UpdateSeenDate(int movieId)
         {
             var movieToUpdate = await _repository.Get(movieId);
@@ -92,10 +73,6 @@ namespace MSQBot_API.Business.Services
             }
         }
 
-        /// <summary>
-        /// Replace the title of a movie.
-        /// </summary>
-        /// <param name="newMovieTitle">DTO representing the change</param>
         public async Task UpdateName(MovieTitleUpdateDto newMovieTitle)
         {
             if (newMovieTitle.NewTitle == string.Empty)
@@ -108,14 +85,21 @@ namespace MSQBot_API.Business.Services
             });
         }
 
-        /// <summary>
-        /// Get a wallpaper for a movie
-        /// </summary>
-        /// <param name="title"></param>
-        /// <returns>Url to the wallpaper</returns>
         public async Task<string> GetMovieWallpaper(string title)
         {
             return _imageScrapper.FindImage(title + WALLPAPER_SEARCH);
+        }
+
+        public async Task<IMovie> GetRandomMovie()
+        {
+            var movies = await GetAll();
+            var toWatchMovies = movies.Where(m => m.SeenDate == null);
+
+            Random random = new Random();
+            int randomItem = random.Next(0, toWatchMovies.Count());
+
+            return toWatchMovies.Skip(randomItem).Take(1).First(); //skip a random number of elements (max nb movie) and select 1
+
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using MSQBot_API.Core.DTOs.Movies;
+using MSQBot_API.Core.Interfaces.Movies;
 
 namespace MSQBot_API.Business.Interfaces.Movies
 {
@@ -33,5 +34,10 @@ namespace MSQBot_API.Business.Interfaces.Movies
         /// Change the poster for all the movies in database
         /// </summary>
         Task UpdateAllMoviePoster();
+
+        /// <summary>
+        /// Get a random movie to watch
+        /// </summary>
+        Task<IMovie> GetRandomMovie();
     }
 }

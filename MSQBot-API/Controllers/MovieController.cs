@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MSQBot_API.Business.Interfaces.Movies;
 using MSQBot_API.Core.DTOs.Movies;
@@ -10,7 +9,7 @@ namespace MSQBot_API.Controllers
 {
     [Route("api/movies")]
     [ApiController]
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class MovieController : ControllerBase
     {
         private readonly ILogger _logger;
@@ -60,7 +59,7 @@ namespace MSQBot_API.Controllers
             }
         }
 
-        [HttpGet("{id:int}", Name = "getMovie")]
+        [HttpGet("{id:int}", Name = "Get Movie")]
         public async Task<IActionResult> GetAsync(int id)
         {
             try
@@ -100,6 +99,32 @@ namespace MSQBot_API.Controllers
                 return StatusCode(500);
             }
 
+        }
+
+        [HttpGet("random", Name = "Get Random Movie")]
+        public async Task<IActionResult> GetRandom()
+        {
+            try
+            {
+                var movie = await _movieServices.GetRandomMovie();
+
+                return Ok(movie);
+            }
+            catch (NoMovieFoundException)
+            {
+                return NotFound();
+            }
+            catch (MovieException ex)
+            {
+                var erroMsg = $"{MovieMessages.ERR_MOVIE_INTERNAL_SERVER}: {ex.Message}";
+                _logger.LogError(erroMsg);
+                return StatusCode(500, erroMsg);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                return StatusCode(500);
+            }
         }
 
         #endregion Getter

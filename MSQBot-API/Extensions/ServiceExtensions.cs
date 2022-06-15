@@ -64,8 +64,8 @@ namespace MSQBot_API.Extensions
         public static void ConfigureBusinessServices(this IServiceCollection services)
         {
             //services
-            services.AddScoped<MovieServices, MovieServices>();
-            services.AddScoped<RateServices, RateServices>();
+            services.AddScoped<IMovieServices, MovieServices>();
+            services.AddScoped<IRateServices, RateServices>();
             services.AddScoped<IUserAuthenticationServices, AuthenticationServices>();
             services.AddScoped<IImageScrapperService, GoogleImageScrapperServices>();
 

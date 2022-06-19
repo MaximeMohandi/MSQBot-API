@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using MSQBot_API.Business.Interfaces.Movies;
 using MSQBot_API.Core.Exception;
 
@@ -6,7 +8,7 @@ namespace MSQBot_API.Controllers
 {
     [Route("api/rates")]
     [ApiController]
-    //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class RateController : ControllerBase
     {
         /*Dependencies*/

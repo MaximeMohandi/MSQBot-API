@@ -12,7 +12,7 @@ namespace MSQBot_API.Business.Interfaces.Movies
         /// </summary>
         /// <param name="userId"></param>
         /// <returns>List of rates with movie associated for a user</returns>
-        public Task<List<RatesMovieDto>> GetRatesUser(long userId);
+        public Task<UserMovieRateDto> GetRatesUser(long userId);
 
         /// <summary>
         /// Add a new rate to a movie in database

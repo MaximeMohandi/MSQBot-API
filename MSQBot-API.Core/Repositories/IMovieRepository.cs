@@ -5,6 +5,6 @@ namespace MSQBot_API.Core.Repositories
 {
     public interface IMovieRepository : IRepository<Movie>
     {
-
+        Task<Movie> Get(string title);
     }
 }

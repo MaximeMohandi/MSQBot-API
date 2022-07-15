@@ -35,6 +35,16 @@ namespace MSQBot_API.Infrastructure.Data.Repositories
            ?? throw new NoMovieFoundException();
 
         }
+
+        public async Task<Movie> Get(string title)
+        {
+            return await _dbContext.Movies
+                .Include(r => r.Rates)
+                .ThenInclude(r => r.User)
+                .FirstOrDefaultAsync(m => m.Title == title)
+           ?? throw new NoMovieFoundException();
+
+        }
         public override async Task Add(Movie movie)
         {
             bool isExist = _dbContext.Movies.Any(m => m.Title == movie.Title);

@@ -36,6 +36,12 @@ namespace MSQBot_API.Business.Services
             return movie.MapToDTO();
         }
 
+        public async Task<MovieRatedDto> Get(string title)
+        {
+            Movie movie = await _repository.Get(title);
+            return movie.MapToDTO();
+        }
+
         public async Task<List<MovieRatedDto>> GetAll()
         {
             var movies = await _repository.GetAll();

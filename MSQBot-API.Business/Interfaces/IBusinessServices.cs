@@ -17,6 +17,13 @@
         public Task<TReturn> Get(int id);
 
         /// <summary>
+        /// Get one element by it's title
+        /// </summary>
+        /// <param name="title">movie title use to identify the element</param>
+        /// <returns>a element with the given title</returns>
+        public Task<TReturn> Get(string title);
+
+        /// <summary>
         /// Get All the element
         /// </summary>
         /// <returns>list of all element</returns>

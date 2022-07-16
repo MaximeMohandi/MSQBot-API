@@ -60,12 +60,38 @@ namespace MSQBot_API.Controllers
             }
         }
 
-        [HttpGet("{id:int}", Name = "Get Movie")]
+        [HttpGet("{id:int}", Name = "Get Movie by Id")]
         public async Task<IActionResult> GetAsync(int id)
         {
             try
             {
                 var movie = await _movieServices.Get(id);
+
+                return Ok(movie);
+            }
+            catch (NoMovieFoundException)
+            {
+                return NotFound();
+            }
+            catch (MovieException ex)
+            {
+                var erroMsg = $"{MovieMessages.ERR_MOVIE_INTERNAL_SERVER}: {ex.Message}";
+                _logger.LogError(erroMsg);
+                return StatusCode(500, erroMsg);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                return StatusCode(500);
+            }
+        }
+
+        [HttpGet("{title}", Name = "Get Movie by Title")]
+        public async Task<IActionResult> GetAsync(string title)
+        {
+            try
+            {
+                var movie = await _movieServices.Get(title);
 
                 return Ok(movie);
             }
@@ -148,7 +174,7 @@ namespace MSQBot_API.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex.Message);
-                return StatusCode(500);
+                return StatusCode(302, ex.Message);
             }
         }
 

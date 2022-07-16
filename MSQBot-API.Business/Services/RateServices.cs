@@ -1,6 +1,8 @@
 ﻿using MSQBot_API.Business.Interfaces.Movies;
 using MSQBot_API.Core.DTOs.Movies;
 using MSQBot_API.Core.Entitites.Movies;
+using MSQBot_API.Core.Exception;
+using MSQBot_API.Core.Extension;
 using MSQBot_API.Core.Helpers;
 using MSQBot_API.Core.Repositories;
 
@@ -18,10 +20,23 @@ namespace MSQBot_API.Business.Services
             _repository = repository;
         }
 
-        public async Task<List<RatesMovieDto>> GetRatesUser(long userId)
+        public async Task<UserMovieRateDto> GetRatesUser(long userId)
         {
             var ratesUser = await _repository.GetRatesUser(userId);
-            return ratesUser.MapToDTO();
+
+            if (ratesUser != null)
+            {
+                var moviesRated = ratesUser.MapToDTO();
+
+                return new UserMovieRateDto()
+                {
+                    User = moviesRated[0].User, //all the rate concern the same user, therefore take the first entry.
+                    AverageUserRating = moviesRated.AvgRate(),
+                    RatedMovies = moviesRated
+                };
+            }
+
+            throw new NoRatesFound();
         }
 
         public async Task RateMovie(MovieRateCreationDto movieRated, IMovieServices movieServices)

@@ -36,6 +36,12 @@ namespace MSQBot_API.Business.Services
             return movie.MapToDTO();
         }
 
+        public async Task<MovieRatedDto> Get(string title)
+        {
+            Movie movie = await _repository.Get(title);
+            return movie.MapToDTO();
+        }
+
         public async Task<List<MovieRatedDto>> GetAll()
         {
             var movies = await _repository.GetAll();
@@ -78,11 +84,9 @@ namespace MSQBot_API.Business.Services
             if (newMovieTitle.NewTitle == string.Empty)
                 throw new ArgumentException("New Title can't be null");
 
-            await _repository.Update(new Movie
-            {
-                MovieId = newMovieTitle.MovieId,
-                Title = newMovieTitle.NewTitle
-            });
+            var existingMovie = await _repository.Get(newMovieTitle.MovieId);
+            existingMovie.Title = newMovieTitle.NewTitle;
+            await _repository.Update(existingMovie);
         }
 
         public async Task<string> GetMovieWallpaper(string title)
